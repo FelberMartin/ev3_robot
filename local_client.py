@@ -31,7 +31,10 @@ app = Flask(__name__)
 @app.route('/run', methods=['POST'])
 def forward():
     cmd = request.json['command']
-    print("/run called with data: ", cmd)
+    param = None
+    if 'parameter' in request.json:
+        param = request.json['parameter']
+    print("/run called with data: ", cmd, " ", param)
 
     if not isConnected:
         return "Not connected to EV3"
@@ -39,18 +42,19 @@ def forward():
     # Validate command
     if cmd != Command.FORWARD and \
         cmd != Command.TURN_LEFT and \
-        cmd != Command.TURN_RIGHT:
+        cmd != Command.TURN_RIGHT and \
+        cmd != Command.INFRARED_SENSOR:
         return "Invalid command"
     
     # Send command to EV3
-    mbox.send(cmd)
+    msg = cmd
+    if param is not None:
+        msg += "," + str(param)
+    mbox.send(msg)
 
     # Wait for done reply from EV3
     mbox.wait()
-    if mbox.read() == "done":
-        return "Success"
-    else:
-        return "Error: Did not receive confirmation from EV3"
+    return mbox.read()
     
 @app.route('/', methods=['POST'])
 def print_post_data():

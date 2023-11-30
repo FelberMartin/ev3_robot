@@ -17,6 +17,7 @@ ev3.speaker.set_speech_options(voice="f1")
 
 motorLeft = Motor(Port.A)
 motorRight = Motor(Port.D)
+infraredSensor = InfraredSensor(Port.S3)
 
 # Configure communication
 server = BluetoothMailboxServer()
@@ -34,20 +35,29 @@ def connectBluetooth():
 
 
 
-motorSpeed = 100
+motorSpeed = 400
 
-def forward():
-    angle = 500
+def forward(angle):
+    if angle is None:
+        angle = 1465.5
+        # angle = 500
+    else:
+        angle = int(angle)
+
     motorLeft.run_angle(speed=motorSpeed, rotation_angle=angle, wait=False)
     motorRight.run_angle(speed=motorSpeed, rotation_angle=angle)
 
-def turn(left = True):
-    angle = 100
-    motorLeftAngle = angle
-    motorRightAngle = -angle
+def turn(angle, left = True):
+    if angle is None:
+        angle = 500
+    else:
+        angle = int(angle)
+
+    motorLeftAngle = -angle
+    motorRightAngle = angle
     if not left:
-        motorLeftAngle = -angle
-        motorRightAngle = angle
+        motorLeftAngle = angle
+        motorRightAngle = -angle
 
     motorLeft.run_angle(speed=motorSpeed, rotation_angle=motorLeftAngle, wait=False)
     motorRight.run_angle(speed=motorSpeed, rotation_angle=motorRightAngle)   
@@ -57,20 +67,29 @@ def readCommands():
     while True:
         print("Waiting for command...")
         mbox.wait()
-        print(mbox.read())
-        if mbox.read() == Command.FORWARD:
-            forward()
-        elif mbox.read() == Command.TURN_LEFT:
-            turn(left=True)
-        elif mbox.read() == Command.TURN_RIGHT:
-            turn(left=False)
-        elif mbox.read() == Command.HEARTBEAT:
+        msg = mbox.read()
+        print("Received command: ", msg)
+        cmd = msg.split(",")[0]
+        param = None
+        if len(msg.split(",")) > 1:
+            param = msg.split(",")[1]
+
+        if cmd == Command.FORWARD:
+            forward(angle=param)
+        elif cmd == Command.TURN_LEFT:
+            turn(left=True, angle=param)
+        elif cmd == Command.TURN_RIGHT:
+            turn(left=False, angle=param)
+        elif cmd == Command.INFRARED_SENSOR:
+            mbox.send(infraredSensor.distance())
+            continue
+        elif cmd == Command.HEARTBEAT:
             print("Heartbeat received")
             continue
         else:
             print("Unknown command")
 
-        mbox.send("done")
+        mbox.send("Success")
         print("Sent done message")
 
 
