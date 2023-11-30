@@ -1,15 +1,85 @@
 from my_pybricks.messaging import BluetoothMailboxClient, TextMailbox
 from time import sleep
+from flask import Flask, request
+from pybricks.parameters import Port
+from commands import Command
 
-client = BluetoothMailboxClient()
-mbox = TextMailbox('talk', client)
-client.connect("00:17:EC:ED:1E:3D")
-print("connected to brick 1...")
-mbox.send("ready")
-print("Sent first message to EV3")
+import threading
+import time
 
-print("Now waiting for values from the EV3...")
+isConnected = False
 
-while True:
+def connectBluetooth():
+    global isConnected, client, mbox
+    client = BluetoothMailboxClient()
+    mbox = TextMailbox('talk', client)
+    print("connecting to brick ...")
+    try:
+        client.connect("00:17:EC:ED:1E:3D")
+        mbox.send("ready")
+        print("connected!")
+        isConnected = True
+    except:
+        isConnected = False
+        print("Could not connect to brick")
+        sleep(5)
+        connectBluetooth()
+
+
+app = Flask(__name__)
+
+@app.route('/run', methods=['POST'])
+def forward():
+    cmd = request.json['command']
+    print("/run called with data: ", cmd)
+
+    if not isConnected:
+        return "Not connected to EV3"
+
+    # Validate command
+    if cmd != Command.FORWARD and \
+        cmd != Command.TURN_LEFT and \
+        cmd != Command.TURN_RIGHT:
+        return "Invalid command"
+    
+    # Send command to EV3
+    mbox.send(cmd)
+
+    # Wait for done reply from EV3
     mbox.wait()
-    print(mbox.read())
+    if mbox.read() == "done":
+        return "Success"
+    else:
+        return "Error: Did not receive confirmation from EV3"
+    
+@app.route('/', methods=['POST'])
+def print_post_data():
+    return ""
+
+
+# Send heartbeats to EV3
+def sendHeartbeats():
+    global isConnected
+    while True:
+        if not isConnected:
+            print("Connecting to EV3")
+            connectBluetooth()
+
+        sleep(3)
+
+        try:
+            mbox.send(Command.HEARTBEAT)
+            print("Sent heartbeat")
+        except:
+            isConnected = False
+            print("Could not send heartbeat")
+            connectBluetooth()
+
+def runServer():
+    app.run(host="localhost", port=8080)
+
+# Run the app
+if __name__ == '__main__':
+
+    threading.Thread(target=runServer).start()
+    threading.Thread(target=sendHeartbeats).start()

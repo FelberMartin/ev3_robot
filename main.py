@@ -6,62 +6,75 @@ from pybricks.parameters import Port, Stop, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
-
-
-from pybricks.messaging import BluetoothMailboxClient, TextMailbox
-
-# # This is the name of the remote EV3 or PC we are connecting to.
-# SERVER = 'mf.ubuntu'
-
-# client = BluetoothMailboxClient()
-# mbox = TextMailbox('greeting', client)
-
-# print('establishing connection...')
-# client.connect(SERVER)
-# print('connected!')
-
-# # In this program, the client sends the first message and then waits for the
-# # server to reply.
-# mbox.send('hello!')
-# print("sent!")
-# print("waiting for reply...")
-# mbox.wait()
-# print("got reply!")
-# print(mbox.read())
-
-# Try the EV3 as a server:
-
-from pybricks.hubs import EV3Brick
 from pybricks.messaging import BluetoothMailboxServer, TextMailbox
 
+from commands import Command
+
+
+# Configure the EV3 Brick
 ev3 = EV3Brick()
+ev3.speaker.set_speech_options(voice="f1")
+
+motorLeft = Motor(Port.A)
+motorRight = Motor(Port.D)
+
+# Configure communication
 server = BluetoothMailboxServer()
 mbox = TextMailbox('talk', server)
 
-ev3.speaker.set_speech_options(voice="f1")
-ev3.speaker.beep(frequency=300)
-print("waiting for connection...")
-server.wait_for_connection()
+def connectBluetooth():
+    ev3.speaker.beep(frequency=300)
+    print("waiting for connection...")  
+    server.wait_for_connection()
 
-print("connected.")
-ev3.speaker.beep(frequency=500)
+    print("connected.")
+    ev3.speaker.beep(frequency=500)
+    if mbox.read() is not None:
+        ev3.speaker.say(mbox.read())
 
-ev3.speaker.say(mbox.read())
 
 
-# Write your program here.
-colorSensor = ColorSensor(port=Port.S2)
+motorSpeed = 100
 
-while True:
-    color = colorSensor.color()
+def forward():
+    angle = 500
+    motorLeft.run_angle(speed=motorSpeed, rotation_angle=angle, wait=False)
+    motorRight.run_angle(speed=motorSpeed, rotation_angle=angle)
 
-    ev3.screen.clear()
-    ev3.screen.draw_text(x=10, y=10, text=color)
+def turn(left = True):
+    angle = 100
+    motorLeftAngle = angle
+    motorRightAngle = -angle
+    if not left:
+        motorLeftAngle = -angle
+        motorRightAngle = angle
 
-    color_str = str(color)
-    if color is not None:
-        color_str = color_str.split(".")[1]
-    ev3.speaker.say(color_str)
+    motorLeft.run_angle(speed=motorSpeed, rotation_angle=motorLeftAngle, wait=False)
+    motorRight.run_angle(speed=motorSpeed, rotation_angle=motorRightAngle)   
 
-    mbox.send(color)
-    wait(1)
+
+def readCommands():
+    while True:
+        print("Waiting for command...")
+        mbox.wait()
+        print(mbox.read())
+        if mbox.read() == Command.FORWARD:
+            forward()
+        elif mbox.read() == Command.TURN_LEFT:
+            turn(left=True)
+        elif mbox.read() == Command.TURN_RIGHT:
+            turn(left=False)
+        elif mbox.read() == Command.HEARTBEAT:
+            print("Heartbeat received")
+            continue
+        else:
+            print("Unknown command")
+
+        mbox.send("done")
+        print("Sent done message")
+
+
+
+# Main program
+connectBluetooth()
+readCommands()
