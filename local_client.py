@@ -28,12 +28,22 @@ def connectBluetooth():
 
 app = Flask(__name__)
 
+@app.route('/get', methods=['GET'])
+def get():
+    mbox.send(Command.FORWARD + ",400")
+
+    # Wait for done reply from EV3
+    mbox.wait()
+    return mbox.read()
+
 @app.route('/run', methods=['POST'])
 def forward():
-    cmd = request.json['command']
+    print(request)
+    print(request.content_type)
+    cmd = request.form['command']
     param = None
-    if 'parameter' in request.json:
-        param = request.json['parameter']
+    if 'parameter' in request.form:
+        param = request.form['parameter']
     print("/run called with data: ", cmd, " ", param)
 
     if not isConnected:
