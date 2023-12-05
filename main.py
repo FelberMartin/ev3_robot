@@ -18,6 +18,7 @@ ev3.speaker.set_speech_options(voice="f1")
 motorLeft = Motor(Port.A)
 motorRight = Motor(Port.D)
 infraredSensor = InfraredSensor(Port.S3)
+colorSensor = ColorSensor(Port.S2)
 
 # Configure communication
 server = BluetoothMailboxServer()
@@ -82,6 +83,9 @@ def readCommands():
             turn(left=False, angle=param)
         elif cmd == Command.INFRARED_SENSOR:
             mbox.send(infraredSensor.distance())
+            continue
+        elif cmd == Command.COLOR_SENSOR:
+            mbox.send(colorSensor.reflection())
             continue
         elif cmd == Command.HEARTBEAT:
             print("Heartbeat received")

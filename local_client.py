@@ -28,16 +28,49 @@ def connectBluetooth():
 
 app = Flask(__name__)
 
-@app.route('/get', methods=['GET'])
-def get():
-    mbox.send(Command.FORWARD + ",400")
+@app.route('/forward', methods=['GET'])
+def forward():
+    mbox.send(Command.FORWARD)
 
     # Wait for done reply from EV3
     mbox.wait()
     return mbox.read()
 
+@app.route('/left', methods=['GET'])
+def left():
+    mbox.send(Command.TURN_LEFT)
+
+    # Wait for done reply from EV3
+    mbox.wait()
+    return mbox.read()
+
+@app.route('/right', methods=['GET'])
+def right():
+    mbox.send(Command.TURN_RIGHT)
+
+    # Wait for done reply from EV3
+    mbox.wait()
+    return mbox.read()
+
+@app.route('/infrared', methods=['GET'])
+def infrared():
+    mbox.send(Command.INFRARED_SENSOR)
+
+    # Wait for done reply from EV3
+    mbox.wait()
+    return mbox.read()
+
+@app.route('/color', methods=['GET'])
+def color():
+    mbox.send(Command.COLOR_SENSOR)
+
+    # Wait for done reply from EV3
+    mbox.wait()
+    return mbox.read()
+
+
 @app.route('/run', methods=['POST'])
-def forward():
+def run():
     print(request)
     print(request.content_type)
     cmd = request.form['command']
@@ -53,7 +86,8 @@ def forward():
     if cmd != Command.FORWARD and \
         cmd != Command.TURN_LEFT and \
         cmd != Command.TURN_RIGHT and \
-        cmd != Command.INFRARED_SENSOR:
+        cmd != Command.INFRARED_SENSOR and \
+        cmd != Command.COLOR_SENSOR:
         return "Invalid command"
     
     # Send command to EV3

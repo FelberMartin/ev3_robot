@@ -4,5 +4,6 @@ class Command:
     TURN_RIGHT = "turn_right"
 
     INFRARED_SENSOR = "infrared_sensor"
+    COLOR_SENSOR = "color_sensor"
 
     HEARTBEAT = "heartbeat"
