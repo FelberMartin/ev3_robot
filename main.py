@@ -10,6 +10,7 @@ from pybricks.messaging import BluetoothMailboxServer, TextMailbox
 
 from commands import Command
 
+import threading
 
 # Configure the EV3 Brick
 ev3 = EV3Brick()
@@ -38,6 +39,10 @@ def connectBluetooth():
 
 motorSpeed = 400
 
+def forward_async(callback_url, angle):
+    forward(angle)
+    mbox.send(callback_url + ",done")
+
 def forward(angle):
     if angle is None:
         angle = 1465.5
@@ -47,6 +52,10 @@ def forward(angle):
 
     motorLeft.run_angle(speed=motorSpeed, rotation_angle=angle, wait=False)
     motorRight.run_angle(speed=motorSpeed, rotation_angle=angle)
+
+def turn_async(callback_url, left, angle):
+    turn(left=left, angle=angle)
+    mbox.send(callback_url + ",done")
 
 def turn(angle, left = True):
     if angle is None:
@@ -61,7 +70,8 @@ def turn(angle, left = True):
         motorRightAngle = -angle
 
     motorLeft.run_angle(speed=motorSpeed, rotation_angle=motorLeftAngle, wait=False)
-    motorRight.run_angle(speed=motorSpeed, rotation_angle=motorRightAngle)   
+    motorRight.run_angle(speed=motorSpeed, rotation_angle=motorRightAngle)  
+    
 
 
 def readCommands():
@@ -70,31 +80,29 @@ def readCommands():
         mbox.wait()
         msg = mbox.read()
         print("Received command: ", msg)
-        cmd = msg.split(",")[0]
+
+        callback_url = msg.split(",")[0]
+        cmd = msg.split(",")[1]
         param = None
-        if len(msg.split(",")) > 1:
-            param = msg.split(",")[1]
+        if len(msg.split(",")) > 2:
+            param = msg.split(",")[2]
 
         if cmd == Command.FORWARD:
-            forward(angle=param)
+            threading.Thread(target=forward_async, args=(callback_url, param)).start()
         elif cmd == Command.TURN_LEFT:
-            turn(left=True, angle=param)
+            threading.Thread(target=turn_async, args=(callback_url, True, param)).start()
         elif cmd == Command.TURN_RIGHT:
-            turn(left=False, angle=param)
+            threading.Thread(target=turn_async, args=(callback_url, False, param)).start()
         elif cmd == Command.INFRARED_SENSOR:
-            mbox.send(infraredSensor.distance())
-            continue
+            mbox.send(callback_url + "," + str(infraredSensor.distance()))
         elif cmd == Command.COLOR_SENSOR:
-            mbox.send(colorSensor.reflection())
-            continue
+            mbox.send(callback_url + "," + str(colorSensor.reflection()))
         elif cmd == Command.HEARTBEAT:
             print("Heartbeat received")
-            continue
+            mbox.send(callback_url + ",Heartbeat received")
         else:
             print("Unknown command")
-
-        mbox.send("Success")
-        print("Sent done message")
+            mbox.send(callback_url, ",Unknown command")
 
 
 

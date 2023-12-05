@@ -1,9 +1,10 @@
 from my_pybricks.messaging import BluetoothMailboxClient, TextMailbox
 from time import sleep
-from flask import Flask, request
+from flask import Flask, request, Response
 from pybricks.parameters import Port
 from commands import Command
 
+import requests
 import threading
 import time
 
@@ -30,75 +31,63 @@ app = Flask(__name__)
 
 @app.route('/forward', methods=['GET'])
 def forward():
-    mbox.send(Command.FORWARD)
-
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
+    return send_command(request, Command.FORWARD)
 
 @app.route('/left', methods=['GET'])
 def left():
-    mbox.send(Command.TURN_LEFT)
-
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
+    return send_command(request, Command.TURN_LEFT)
 
 @app.route('/right', methods=['GET'])
 def right():
-    mbox.send(Command.TURN_RIGHT)
-
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
+    return send_command(request, Command.TURN_RIGHT)
 
 @app.route('/infrared', methods=['GET'])
 def infrared():
-    mbox.send(Command.INFRARED_SENSOR)
-
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
+    return send_command(request, Command.INFRARED_SENSOR, sync=True)
 
 @app.route('/color', methods=['GET'])
 def color():
-    mbox.send(Command.COLOR_SENSOR)
+    return send_command(request, Command.COLOR_SENSOR, sync=True)
 
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
-
-
-@app.route('/run', methods=['POST'])
-def run():
-    print(request)
-    print(request.content_type)
-    cmd = request.form['command']
-    param = None
-    if 'parameter' in request.form:
-        param = request.form['parameter']
-    print("/run called with data: ", cmd, " ", param)
-
+def send_command(request, command, sync=False):
     if not isConnected:
-        return "Not connected to EV3"
-
-    # Validate command
-    if cmd != Command.FORWARD and \
-        cmd != Command.TURN_LEFT and \
-        cmd != Command.TURN_RIGHT and \
-        cmd != Command.INFRARED_SENSOR and \
-        cmd != Command.COLOR_SENSOR:
-        return "Invalid command"
+        return Response("EV3 not connected", status=503)
     
-    # Send command to EV3
-    msg = cmd
-    if param is not None:
-        msg += "," + str(param)
-    mbox.send(msg)
+    callback_url = request.headers["CPEE_CALLBACK"]
 
-    # Wait for done reply from EV3
-    mbox.wait()
-    return mbox.read()
+    if sync:
+        mbox.send(callback_url[4:] + "," + command)
+        mbox.wait()
+        response = mbox.read()
+        return response.split(",")[1]
+    else:    
+        mbox.send(callback_url + "," + command)
+        return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})
+
+def send_callbacks():
+    last_response = None
+    while True:
+        if not isConnected:
+            sleep(3)
+            continue
+
+        
+        response = mbox.read()
+        if response == last_response or response == None:
+            sleep(0.001)
+            continue
+
+        last_response = response
+
+        print("Received response from EV3: ", response)
+        callback_url = response.split(",")[0]
+        data = response.split(",")[1]
+        if "http" not in callback_url:
+            continue
+
+        print("Sending response to callback url: ", callback_url)
+        requests.put(callback_url, data=data)
+
     
 @app.route('/', methods=['POST'])
 def print_post_data():
@@ -108,6 +97,7 @@ def print_post_data():
 # Send heartbeats to EV3
 def sendHeartbeats():
     global isConnected
+    counter = 0
     while True:
         if not isConnected:
             print("Connecting to EV3")
@@ -116,9 +106,12 @@ def sendHeartbeats():
         sleep(3)
 
         try:
-            mbox.send(Command.HEARTBEAT)
+            callback_url = "heartbeatcallback_" + str(counter)
+            counter += 1
+            mbox.send(callback_url + "," + Command.HEARTBEAT)
             print("Sent heartbeat")
-        except:
+        except Exception as e:
+            print(e)
             isConnected = False
             print("Could not send heartbeat")
             connectBluetooth()
@@ -130,4 +123,5 @@ def runServer():
 if __name__ == '__main__':
 
     threading.Thread(target=runServer).start()
+    threading.Thread(target=send_callbacks).start()
     threading.Thread(target=sendHeartbeats).start()
