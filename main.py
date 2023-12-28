@@ -97,6 +97,14 @@ def readCommands():
             mbox.send(callback_url + "," + str(infraredSensor.distance()))
         elif cmd == Command.COLOR_SENSOR:
             mbox.send(callback_url + "," + str(colorSensor.reflection()))
+        elif cmd == Command.MOTOR_LEFT_ANGLE:
+            mbox.send(callback_url + "," + str(motorLeft.angle()))
+        elif cmd == Command.MOTOR_LEFT_SPEED:
+            mbox.send(callback_url + "," + str(motorLeft.speed(window=1)))
+        elif cmd == Command.MOTOR_RIGHT_ANGLE:
+            mbox.send(callback_url + "," + str(motorRight.angle()))
+        elif cmd == Command.MOTOR_RIGHT_SPEED:
+            mbox.send(callback_url + "," + str(motorRight.speed(window=1)))
         elif cmd == Command.HEARTBEAT:
             print("Heartbeat received")
             mbox.send(callback_url + ",Heartbeat received")

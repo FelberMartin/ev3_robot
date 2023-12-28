@@ -41,7 +41,7 @@ def handle_post_request(request):
 
 
 def _handle_data(full_json):
-    global current_stream_file
+    global current_stream_file, current_stream
     if 'state' in full_json['content']:
         if full_json['content']['state'] == 'running':
             current_stream_file = full_json['timestamp']
@@ -68,3 +68,9 @@ def _store_stream_point(stream_point):
 
     with open(f"streams/{current_stream_file}", 'a') as f:
         f.write(str(stream_point) + "\n")
+
+
+
+
+def display():
+    return render_template('index.html')

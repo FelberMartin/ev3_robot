@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/grpy@1.0.0/dist/grpy.js"></script>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const actorPosition = { x: 100, y: 100 };
+        const actorRadius = 10;
+
+        function drawActor(position) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.arc(position.x, position.y, actorRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'blue';
+            ctx.fill();
+            ctx.stroke();
+        }
+
+
+        // Initial draw
+        drawActor(actorPosition);
+    
+
+
+        // Example: Update actor position (you can replace this with your logic)
+        function updateActorPosition(command) {
+            switch (command) {
+                case 'forward':
+                    actorPosition.y += 10;
+                    break;
+                case 'turn_left':
+                    actorPosition.x -= 10;
+                    break;
+                case 'turn_right':
+                    actorPosition.x += 10;
+                    break;
+            }
+
+            drawActor(actorPosition);
+        }
+
+        // Example: Simulate real-time updates (replace with your logic)
+        setInterval(() => {
+            const commands = ['forward', 'turn_left', 'turn_right'];
+            const randomCommand = commands[Math.floor(Math.random() * commands.length)];
+            updateActorPosition(randomCommand);
+        }, 1000);
+    </script>
+</body>
+</html>

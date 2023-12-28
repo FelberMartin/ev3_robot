@@ -96,6 +96,10 @@ def print_post_data():
     return visualization.handle_post_request(request)
 
 
+@app.route('/display', methods=['get'])
+def display():
+    return visualization.display()
+
 
 # Send heartbeats to EV3
 def sendHeartbeats():
