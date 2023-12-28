@@ -8,7 +8,7 @@ import requests
 import threading
 import time
 
-import visualization
+import vis.visualization as visualization
 
 isConnected = False
 
