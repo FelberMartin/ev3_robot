@@ -8,6 +8,8 @@ import requests
 import threading
 import time
 
+import visualization
+
 isConnected = False
 
 def connectBluetooth():
@@ -29,23 +31,23 @@ def connectBluetooth():
 
 app = Flask(__name__)
 
-@app.route('/forward', methods=['GET'])
+@app.route('/forward', methods=['POST'])
 def forward():
     return send_command(request, Command.FORWARD)
 
-@app.route('/left', methods=['GET'])
+@app.route('/left', methods=['POST'])
 def left():
     return send_command(request, Command.TURN_LEFT)
 
-@app.route('/right', methods=['GET'])
+@app.route('/right', methods=['POST'])
 def right():
     return send_command(request, Command.TURN_RIGHT)
 
-@app.route('/infrared', methods=['GET'])
+@app.route('/infrared', methods=['POST'])
 def infrared():
     return send_command(request, Command.INFRARED_SENSOR, sync=True)
 
-@app.route('/color', methods=['GET'])
+@app.route('/color', methods=['POST'])
 def color():
     return send_command(request, Command.COLOR_SENSOR, sync=True)
 
@@ -88,10 +90,11 @@ def send_callbacks():
         print("Sending response to callback url: ", callback_url)
         requests.put(callback_url, data=data)
 
-    
+# ------------------------- Receiving data from CPEE ---------------------------    
 @app.route('/', methods=['POST'])
 def print_post_data():
-    return ""
+    return visualization.handle_post_request(request)
+
 
 
 # Send heartbeats to EV3
