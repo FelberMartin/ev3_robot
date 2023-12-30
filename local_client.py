@@ -6,7 +6,6 @@ from commands import Command
 
 import requests
 import threading
-import time
 
 import vis.visualization as visualization
 
@@ -51,17 +50,37 @@ def infrared():
 def color():
     return send_command(request, Command.COLOR_SENSOR, sync=True)
 
+@app.route('/motor', methods=['POST'])
+def motor():
+    side = request.form['side']
+    assert(side == "left" or side == "right")
+    measure = request.form['measure']
+    assert(measure == "speed" or measure == "angle")
+    
+    return send_command(request, "motor_" + side + "_" + measure, sync=True)
+
+@app.route('/all_measures', methods=['POST'])    
+def all_measures():
+    response = send_command(request, Command.ALL_MEASURES, sync=True)
+    response = response.replace("'", '"')   # CPEE requires double quotes
+    return response
+
 def send_command(request, command, sync=False):
     if not isConnected:
         return Response("EV3 not connected", status=503)
     
-    callback_url = request.headers["CPEE_CALLBACK"]
+    callback_url = "____no_cpee_callback_provided"
+    if "CPEE_CALLBACK" in request.headers:
+        callback_url = request.headers["CPEE_CALLBACK"]
 
     if sync:
-        mbox.send(callback_url[4:] + "," + command)
-        mbox.wait()
-        response = mbox.read()
-        return response.split(",")[1]
+        sent_callback_url = callback_url[4:]    # Remove "http" from callback url
+        mbox.send(sent_callback_url + "," + command)
+        while True:
+            mbox.wait()
+            response = mbox.read()
+            if sent_callback_url in response:
+                return response.split(",", 1)[1]
     else:    
         mbox.send(callback_url + "," + command)
         return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})

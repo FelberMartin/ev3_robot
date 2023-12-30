@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import json
 
 # A list of CPEE instances that are allowed to send data to this server
-instances = {27148}
+instances = {27148, 27207}
 
 current_stream_file = None
 
@@ -48,7 +48,7 @@ def _handle_data(full_json):
         elif full_json['content']['state'] == 'stopped':
             current_stream_file = None
 
-    if full_json['topic'] == 'stream':
+    if full_json['topic'] == 'stream' and full_json['datastream'] is not None:
         _handle_probe_data(full_json)
 
 
@@ -66,7 +66,7 @@ def _store_stream_point(stream_point):
     if current_stream_file is None:
         raise Exception("No stream file is currently open")
 
-    with open(f"streams/{current_stream_file}", 'a') as f:
+    with open(f"./vis/streams/{current_stream_file}", 'a') as f:
         f.write(str(stream_point) + "\n")
 
 
@@ -74,3 +74,5 @@ def _store_stream_point(stream_point):
 
 def display():
     return render_template('index.html')
+
+# Use React for visualization?

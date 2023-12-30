@@ -10,4 +10,6 @@ class Command:
     MOTOR_RIGHT_ANGLE = "motor_right_angle"
     MOTOR_RIGHT_SPEED = "motor_right_speed"
 
+    ALL_MEASURES = "all_measures"
+
     HEARTBEAT = "heartbeat"
