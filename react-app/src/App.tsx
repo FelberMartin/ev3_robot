@@ -1,4 +1,5 @@
 import Dropdown from "./components/Dropdown";
+import Maze from "./components/Maze";
 
 
 function App() {
@@ -12,7 +13,10 @@ function App() {
 
   return <div>
     <h1>EV3 Maze Solver</h1>
+    <br />
     <Dropdown items={items}/>
+    <br />
+    <Maze />
   </div>
 }
 

@@ -20,7 +20,7 @@ function Dropdown({items}: Props) {
       </button>
       <ul className="dropdown-menu">
         {items.map((item) => (
-          <li>
+          <li key={item}>
           <a className={
             selectedFile === item
             ? "dropdown-item active"
