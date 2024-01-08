@@ -1,3 +1,4 @@
+import { gridSegmentCounts, overallSize, tileSize, wallSize } from "../positions";
 
 interface Props {
   discoverStates: Array<Array<DiscoverState>>,
@@ -11,17 +12,6 @@ export enum DiscoverState {
   path = "path",
   target = "target"
 }
-
-const size = 4;
-const tileSize = 140;
-const wallSize = 14;
-
-const tileCount = size;
-const wallCount = size + 1;
-const gridSegmentCounts = tileCount + wallCount;
-const overallSize = tileCount * tileSize + wallCount * wallSize;
-
-export { size, tileSize, wallSize, tileCount, wallCount, gridSegmentCounts, overallSize };
 
 function Maze({ discoverStates } : Props) {
 

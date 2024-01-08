@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import Maze, { overallSize } from './Maze'
+import { getCanvasMiddleTilePosition, overallSize } from '../positions'
 
 const MazeCanvas = props => {
   
@@ -27,10 +27,12 @@ const MazeCanvas = props => {
     ctx.lineWidth = 5
     ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
+    const tileIndex = { x: 1, y: 0 }
+    const {x, y} = getCanvasMiddleTilePosition(tileIndex.x, tileIndex.y);
 
     ctx.fillStyle = '#000000'
     ctx.beginPath()
-    ctx.arc(50, 100, 20*2, 0, 2*Math.PI)
+    ctx.arc(x, y, 20*2, 0, 2*Math.PI)
     ctx.fill()
   }
   
