@@ -12,22 +12,28 @@ export enum DiscoverState {
   target = "target"
 }
 
-
+const size = 4;
 const tileSize = 140;
-const wallSize = 24;    // this is the minimum width for a column, so it cant get smaller than this
+const wallSize = 14;
 
-function Maze({ discoverStates, size = 4 } : Props) {
-  const tileCount = size;
-  const wallCount = size + 1;
-  const gridSegmentCounts = tileCount + wallCount;
-  const overallSize = tileCount * tileSize + wallCount * wallSize;
+const tileCount = size;
+const wallCount = size + 1;
+const gridSegmentCounts = tileCount + wallCount;
+const overallSize = tileCount * tileSize + wallCount * wallSize;
+
+export { size, tileSize, wallSize, tileCount, wallCount, gridSegmentCounts, overallSize };
+
+function Maze({ discoverStates } : Props) {
 
   const getDiscoverState = function(row: number, col: number) {
     return discoverStates[row][col]
   }
 
   return (
-    <div className="container text-center maze">
+    <div className="container text-center maze" style={{
+      width: overallSize,
+      height: overallSize,
+    }}>
       {[...Array(gridSegmentCounts)].map((_, index) => (
         <div
           key={index}
@@ -50,7 +56,7 @@ function GridSegment(rowIndex: number, colIndex: number, state: DiscoverState) {
   return (
     <div
       key={colIndex}
-      className={`col-auto ${isWall ? "wall" : "tile"} ${state.toString()}`}
+      className={`col-auto g-0 ${isWall ? "wall" : "tile"} ${state.toString()}`}
       style={{
         width: isVerticalWall ? wallSize : tileSize,
         height: isHorizontalWall ? wallSize : tileSize,

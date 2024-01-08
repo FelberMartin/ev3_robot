@@ -38,8 +38,10 @@ function App() {
     <h1>EV3 Maze Solver</h1>
     <br />
     <Dropdown items={items}/>
-    <MazeCanvas className="MazeCanvas"/>
-    <Maze size={4} discoverStates={initStates(4)}/>
+    <div>
+      <MazeCanvas/>
+      <Maze discoverStates={initStates(4)}/>
+    </div>
   </div>
 }
 

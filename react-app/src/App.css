@@ -10,7 +10,12 @@
 }
 
 .maze {
-    scale: 0.7;
+    position: relative;
+}
+
+.mazeCanvas {
+    position: absolute;
+    z-index: 1;
 }
 
 .tile {
@@ -35,10 +40,4 @@
 
 .wall.no_wall {
     background-color: lightgrey;
-}
-
-.MazeCanvas {
-    width: 400px;
-    height: 400px;
-    margin: 24px;
 }

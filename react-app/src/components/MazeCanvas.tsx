@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react'
+import Maze, { overallSize } from './Maze'
 
 const MazeCanvas = props => {
   
@@ -21,9 +22,11 @@ const MazeCanvas = props => {
   const draw = (ctx, frameCount) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
-    // draw background
-    ctx.fillStyle = '#559944'
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height + 200)
+    // draw background a border around the canvas
+    ctx.strokeStyle = '#000000'
+    ctx.lineWidth = 5
+    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    
 
     ctx.fillStyle = '#000000'
     ctx.beginPath()
@@ -53,7 +56,11 @@ const MazeCanvas = props => {
     }
   }, [draw])
   
-  return <canvas ref={canvasRef} {...props}/>
+  return <canvas ref={canvasRef} className="mazeCanvas" {...props} style={{
+      width: overallSize,
+      height: overallSize,
+  }}
+    />
 }
 
 export default MazeCanvas
