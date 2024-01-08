@@ -1,0 +1,44 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-size: calc(10px + 2vmin);
+    color: white;
+    background-color: darkslategray;
+}
+
+.maze {
+    scale: 0.7;
+}
+
+.tile {
+    background-color: gray;
+}
+
+.tile.path {
+    background-color: rgb(228, 255, 224);
+}
+
+.tile.target {
+    background-color: green;
+}
+
+.wall {
+    background-color: black;
+}
+
+.wall.hidden {
+    background-color: dimgray;
+}
+
+.wall.no_wall {
+    background-color: lightgrey;
+}
+
+.MazeCanvas {
+    width: 400px;
+    height: 400px;
+    margin: 24px;
+}

@@ -1,6 +1,7 @@
 import Dropdown from "./components/Dropdown";
 import Maze, { DiscoverState } from "./components/Maze";
-
+import MazeCanvas from "./components/MazeCanvas";
+import './App.css';
 
 
 function initStates(size: number) {
@@ -33,11 +34,11 @@ function App() {
     "right3"
   ]
 
-  return <div>
+  return <div className="root">
     <h1>EV3 Maze Solver</h1>
     <br />
     <Dropdown items={items}/>
-    <br />
+    <MazeCanvas className="MazeCanvas"/>
     <Maze size={4} discoverStates={initStates(4)}/>
   </div>
 }

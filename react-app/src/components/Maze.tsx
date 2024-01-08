@@ -5,11 +5,15 @@ interface Props {
 }
 
 export enum DiscoverState {
-  hidden, wall, no_wall, path, target
+  hidden = "hidden", 
+  wall = "wall", 
+  no_wall = "no_wall",
+  path = "path",
+  target = "target"
 }
 
 
-const tileSize = 90;
+const tileSize = 140;
 const wallSize = 24;    // this is the minimum width for a column, so it cant get smaller than this
 
 function Maze({ discoverStates, size = 4 } : Props) {
@@ -23,7 +27,7 @@ function Maze({ discoverStates, size = 4 } : Props) {
   }
 
   return (
-    <div className="container text-center">
+    <div className="container text-center maze">
       {[...Array(gridSegmentCounts)].map((_, index) => (
         <div
           key={index}
@@ -46,15 +50,12 @@ function GridSegment(rowIndex: number, colIndex: number, state: DiscoverState) {
   return (
     <div
       key={colIndex}
-      className="col-auto"
+      className={`col-auto ${isWall ? "wall" : "tile"} ${state.toString()}`}
       style={{
         width: isVerticalWall ? wallSize : tileSize,
         height: isHorizontalWall ? wallSize : tileSize,
-        backgroundColor: isWall ? "grey" : "blue",
-        border: "1px solid black", // Add this line for borders
       }}
     >
-      {state === DiscoverState.hidden && <h4>?</h4>}
     </div>
   );
 }
