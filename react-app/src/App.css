@@ -9,8 +9,8 @@
     background-color: darkslategray;
 }
 
-.maze {
-    position: relative;
+.mazeSpacer {
+    height: 160px;
 }
 
 .robot {

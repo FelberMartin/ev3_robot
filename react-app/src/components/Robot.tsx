@@ -24,7 +24,7 @@ const Robot = ({ posX, posY, rotation } : Props) => {
             height: robotSize,
             marginLeft: imageTopLeft.x,
             marginTop: imageTopLeft.y,
-            transform: `rotate(${rotation}deg)`//translate(${x}px, ${y}px)`
+            transform: `rotate(${rotation}deg)`
         }} />
     </div>
 }

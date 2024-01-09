@@ -39,9 +39,10 @@ function App() {
     <h1>EV3 Maze Solver</h1>
     <br />
     <Dropdown items={items}/>
+    <div className="mazeSpacer" />
     <div>
       <MazeCanvas/>
-      <Robot posX={1} posY={0} rotation={180} />
+      <Robot posX={0} posY={-1} rotation={180} />
       <Maze discoverStates={initStates(4)}/>
     </div>
   </div>
