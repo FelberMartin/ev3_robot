@@ -2,6 +2,7 @@ import Dropdown from "./components/Dropdown";
 import Maze, { DiscoverState } from "./components/Maze";
 import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
+import Robot from "./components/Robot";
 
 
 function initStates(size: number) {
@@ -40,6 +41,7 @@ function App() {
     <Dropdown items={items}/>
     <div>
       <MazeCanvas/>
+      <Robot posX={1} posY={0} rotation={180} />
       <Maze discoverStates={initStates(4)}/>
     </div>
   </div>

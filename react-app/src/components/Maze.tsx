@@ -2,7 +2,6 @@ import { gridSegmentCounts, overallSize, tileSize, wallSize } from "../positions
 
 interface Props {
   discoverStates: Array<Array<DiscoverState>>,
-  size: number
 }
 
 export enum DiscoverState {

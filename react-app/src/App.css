@@ -13,6 +13,11 @@
     position: relative;
 }
 
+.robot {
+    position: absolute;
+    z-index: 2;
+}
+
 .mazeCanvas {
     position: absolute;
     z-index: 1;
@@ -41,3 +46,4 @@
 .wall.no_wall {
     background-color: lightgrey;
 }
+
