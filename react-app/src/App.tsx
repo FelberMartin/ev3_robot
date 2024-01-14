@@ -3,6 +3,7 @@ import Maze, { DiscoverState } from "./components/Maze";
 import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
+import WebSocketComponent from "./components/WebSocketComponent";
 
 
 function initStates(size: number) {
@@ -36,6 +37,7 @@ function App() {
   ]
 
   return <div className="root">
+    <WebSocketComponent />
     <h1>EV3 Maze Solver</h1>
     <br />
     <Dropdown items={items}/>

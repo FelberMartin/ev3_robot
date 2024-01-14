@@ -3,6 +3,8 @@ from time import sleep
 from flask import Flask, request, Response
 from pybricks.parameters import Port
 from commands import Command
+from flask_socketio import SocketIO, send
+from flask_cors import CORS, cross_origin  # Import the CORS module
 
 import requests
 import threading
@@ -29,6 +31,9 @@ def connectBluetooth():
 
 
 app = Flask(__name__)
+socketio = SocketIO(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/forward', methods=['POST'])
 def forward():
@@ -119,6 +124,16 @@ def print_post_data():
 def display():
     return visualization.display()
 
+@app.route("/", methods=['GET'])
+@cross_origin()
+def index():
+    return "Hello, World!"
+
+@socketio.on('connect')
+def handle_connect():
+    print("### Client connected with socketio")
+    return visualization.handle_connect(socketio)
+
 
 # Send heartbeats to EV3
 def sendHeartbeats():
@@ -143,11 +158,11 @@ def sendHeartbeats():
             connectBluetooth()
 
 def runServer():
-    app.run(host="localhost", port=8080)
+    visualization.initialize()
+    socketio.run(app, host="localhost", port=8080)
 
 # Run the app
 if __name__ == '__main__':
-
-    threading.Thread(target=runServer).start()
     threading.Thread(target=send_callbacks).start()
     threading.Thread(target=sendHeartbeats).start()
+    runServer()

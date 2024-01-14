@@ -27,13 +27,13 @@ const MazeCanvas = props => {
     ctx.lineWidth = 5
     ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
-    const tileIndex = { x: 1, y: 0 }
-    const {x, y} = getCanvasMiddleTilePosition(tileIndex.x, tileIndex.y);
+    // const tileIndex = { x: 1, y: 0 }
+    // const {x, y} = getCanvasMiddleTilePosition(tileIndex.x, tileIndex.y);
 
-    ctx.fillStyle = '#000000'
-    ctx.beginPath()
-    ctx.arc(x, y, 20*2, 0, 2*Math.PI)
-    ctx.fill()
+    // ctx.fillStyle = '#000000'
+    // ctx.beginPath()
+    // ctx.arc(x, y, 20*2, 0, 2*Math.PI)
+    // ctx.fill()
   }
   
   useEffect(() => {

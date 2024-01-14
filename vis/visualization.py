@@ -1,12 +1,29 @@
 from flask import Flask, render_template, request, jsonify
 import json
+from flask_socketio import SocketIO, send
+import json
+import os
 
 # A list of CPEE instances that are allowed to send data to this server
 instances = {27148, 27207}
 
 current_stream_file = None
 
+data = []
 
+def initialize():
+    _update_data()
+
+def _update_data():
+    global data
+    data = []
+    # Initilize the data with all the files in the streams folder
+    # Data should be a list of dictionaries, where each dictionary represents a stream
+    # Each dictionary should have the following keys: "key" (the file name) and "content" (the file content)
+    for file_name in os.listdir("./vis/streams"):
+        with open(f"./vis/streams/{file_name}", 'r') as f:
+            content = f.read()
+            data.append({"key": file_name, "content": content})
 
 def handle_post_request(request):
     boundary = request.headers['Content-Type'].split('boundary=')[1]
@@ -59,6 +76,10 @@ def _handle_probe_data(full_json):
     print("+++ " + str(stream_point))
     _store_stream_point(stream_point)
 
+    _update_data()
+    if socketio is not None:
+        socketio.emit('update', json.dumps(data))
+
 
     
 
@@ -70,9 +91,10 @@ def _store_stream_point(stream_point):
         f.write(str(stream_point) + "\n")
 
 
+socketio = None
 
+def handle_connect(socketio_from_app):
+    global socketio
+    socketio = socketio_from_app
+    send(json.dumps(data))
 
-def display():
-    return render_template('index.html')
-
-# Use React for visualization?
