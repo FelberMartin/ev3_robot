@@ -23,7 +23,7 @@ def _update_data():
     for file_name in os.listdir("./vis/streams"):
         with open(f"./vis/streams/{file_name}", 'r') as f:
             content = f.read()
-            data.append({"key": file_name, "content": content})
+            data.append({"id": file_name, "content": content})
 
 def handle_post_request(request):
     boundary = request.headers['Content-Type'].split('boundary=')[1]
@@ -77,10 +77,6 @@ def _handle_probe_data(full_json):
     _store_stream_point(stream_point)
 
     _update_data()
-    if socketio is not None:
-        socketio.emit('update', json.dumps(data))
-
-
     
 
 def _store_stream_point(stream_point):
@@ -90,11 +86,6 @@ def _store_stream_point(stream_point):
     with open(f"./vis/streams/{current_stream_file}", 'a') as f:
         f.write(str(stream_point) + "\n")
 
-
-socketio = None
-
-def handle_connect(socketio_from_app):
-    global socketio
-    socketio = socketio_from_app
-    send(json.dumps(data))
+def getData():
+    return data
 

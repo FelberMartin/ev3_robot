@@ -7,33 +7,45 @@ const WebSocketComponent = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        // open socket connection
-        // create websocket
-        socket = io("http://localhost:8080");
-        console.log("here");
-
-        socket.on('connect', () => {
-            console.log('Connected to server with SocketIO');
-        });
-
-        socket.on('update', (newData) => {
-            setData(JSON.parse(newData));
-        }); 
-
-        // when component unmounts, disconnect
-        return (() => {
-            socket.disconnect()
-        })
-    }, [])
+        // Function to fetch data from the backend
+        const fetchData = async () => {
+          try {
+            const response = await fetch('http://localhost:8080/data');
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+    
+            const result = await response.json();
+            console.log('result', result);
+            setData(result);
+          } catch (error) {
+            console.error('Error fetching data:', error.message);
+          }
+        };
+    
+        // Fetch data initially
+        fetchData();
+    
+        // Set up periodic fetching using setInterval
+        const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(intervalId);
+      }, []); 
 
     
 
     return (
         <div>
         <div>
-            {data.length === 0 && <div>No data yet</div>}
+            {data === undefined && <div>No data yet</div>}
             {data.map((item) => (
-            <div key={item.id}>{item.content}</div>
+            <div key={item.id}>
+                <h3>{item.id}</h3>
+                <p style={{
+                    fontSize: 12,
+                }}>{JSON.stringify(item.content).substring(0, 120)} ... </p>
+            </div>
             ))}
         </div>
         </div>
