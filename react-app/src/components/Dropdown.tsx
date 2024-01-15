@@ -8,7 +8,10 @@ interface Props {
 }
 
 function Dropdown({items, onSelected}: Props) {
-  const [selectedFile, setSelectedFile] = useState("");
+  const [selectedFile, setSelectedFile] = useState("None");
+
+  let _items = structuredClone(items);
+  _items.push("None");
 
   return (
     <div className="dropdown">
@@ -18,10 +21,10 @@ function Dropdown({items, onSelected}: Props) {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        {selectedFile || "Select a file"}
+        {selectedFile === "None" ? "Select a file" : selectedFile }
       </button>
       <ul className="dropdown-menu">
-        {items.map((item) => (
+        {_items.map((item) => (
           <li key={item}>
           <a className={
             selectedFile === item
@@ -29,7 +32,7 @@ function Dropdown({items, onSelected}: Props) {
             : "dropdown-item"
           } href="#" onClick={(event) => {
             setSelectedFile(item);
-            onSelected(item);
+            onSelected(item === "None" ? "" : item);
           }}>
             {item}
           </a>
