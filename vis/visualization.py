@@ -95,6 +95,7 @@ def _store_stream_point(stream_point):
         f.write(str(stream_point) + "\n")
 
 def getData():
+    _update_data()
     return data
 
 def getCurrentRunData():

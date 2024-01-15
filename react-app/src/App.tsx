@@ -3,49 +3,32 @@ import Maze, { DiscoveryState } from "./components/Maze";
 import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
-import WebSocketComponent from "./components/WebSocketComponent";
-
-
-function initStates(size: number) {
-  const stateDimension = 2*size + 1;
-  const states: Array<Array<DiscoveryState>> = [];
-  for (let i = 0; i < stateDimension; i++) {
-    states[i] = [];
-    for (let j = 0; j < stateDimension; j++) {
-      states[i][j] = DiscoveryState.hidden;
-    }
-  }
-
-  states[0][1] = DiscoveryState.no_wall;
-  states[1][1] = DiscoveryState.path;
-  states[1][0] = DiscoveryState.wall;
-  states[2][1] = DiscoveryState.wall;
-  states[1][2] = DiscoveryState.no_wall;
-  states[1][3] = DiscoveryState.target;
-
-  return states;
-}
+import { useEffect, useState } from "react";
+import { RunDisplayInfo, getAllRunData } from "./util/RunData";
 
 
 function App() {
-  const items = [
-    "left",
-    "right",
-    "random",
-    "right2",
-    "right3"
-  ]
+  let [allRunData, setAllRunData] = useState<(any[] | null)[]>([]);
+  let [displayInfo, setDisplayInfo] = useState<RunDisplayInfo>(new RunDisplayInfo());
+  let [selectedRun, setSelectedRun] = useState<string>("");
+
+  useEffect(() => {
+    getAllRunData().then((data) => {
+      setAllRunData(data)
+    })
+  }, []);
+
+
 
   return <div className="root">
-    <WebSocketComponent />
     <h1>EV3 Maze Solver</h1>
     <br />
-    <Dropdown items={items}/>
+    <Dropdown items={allRunData.map(x => x.id)} onSelected={setSelectedRun} />
     <div className="mazeSpacer" />
     <div>
       <MazeCanvas/>
-      <Robot posX={0} posY={-1} rotation={180} />
-      <Maze discoverStates={initStates(4)}/>
+      <Robot info={displayInfo} show={selectedRun !== ""} />
+      <Maze discoverStates={displayInfo.discoveryStates}/>
     </div>
   </div>
 }

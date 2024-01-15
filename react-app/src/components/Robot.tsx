@@ -1,18 +1,22 @@
+import { RunDisplayInfo } from '../util/RunData';
 import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../util/positions'
 import image from './../assets/robot.png'
 
 interface Props {
-    posX: number,
-    posY: number,
-    rotation: number,
+    info: RunDisplayInfo
+    show: boolean
 }
 
-const Robot = ({ posX, posY, rotation } : Props) => {
-    const {x, y} = getCanvasMiddleTilePosition(posX, posY);
+const Robot = ({ info, show } : Props) => {
+    const {x, y} = getCanvasMiddleTilePosition(info.position[0], info.position[1]);
     const robotSize = tileSize * 0.8
     const imageTopLeft = {
         x: x - robotSize / 2,
         y: y - robotSize / 2
+    }
+
+    if (!show) {
+        return null
     }
 
     return <div className="robot" style={{
@@ -24,7 +28,7 @@ const Robot = ({ posX, posY, rotation } : Props) => {
             height: robotSize,
             marginLeft: imageTopLeft.x,
             marginTop: imageTopLeft.y,
-            transform: `rotate(${rotation}deg)`
+            transform: `rotate(${info.rotation}deg)`
         }} />
     </div>
 }

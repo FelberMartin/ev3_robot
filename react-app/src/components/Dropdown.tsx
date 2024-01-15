@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { on } from "events";
 import { useState } from "react";
 
 interface Props {
   items: Array<string>;
+  onSelected: (item: string) => void;
 }
 
-function Dropdown({items}: Props) {
+function Dropdown({items, onSelected}: Props) {
   const [selectedFile, setSelectedFile] = useState("");
 
   return (
@@ -25,9 +27,10 @@ function Dropdown({items}: Props) {
             selectedFile === item
             ? "dropdown-item active"
             : "dropdown-item"
-          } href="#" onClick={(event) => (
-            setSelectedFile(item)
-          )}>
+          } href="#" onClick={(event) => {
+            setSelectedFile(item);
+            onSelected(item);
+          }}>
             {item}
           </a>
         </li>
