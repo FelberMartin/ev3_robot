@@ -10,7 +10,7 @@ const WebSocketComponent = () => {
         // Function to fetch data from the backend
         const fetchData = async () => {
           try {
-            const response = await fetch('http://localhost:8080/data');
+            const response = await fetch('http://localhost:8080/currentRunData');
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
@@ -27,7 +27,7 @@ const WebSocketComponent = () => {
         fetchData();
     
         // Set up periodic fetching using setInterval
-        const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+        const intervalId = setInterval(fetchData, 50000); // Fetch every 5 seconds
     
         // Clean up the interval when the component unmounts
         return () => clearInterval(intervalId);

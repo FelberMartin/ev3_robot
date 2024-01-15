@@ -1,10 +1,10 @@
-import { gridSegmentCounts, overallSize, tileSize, wallSize } from "../positions";
+import { gridSegmentCounts, overallSize, tileSize, wallSize } from "../util/positions";
 
 interface Props {
-  discoverStates: Array<Array<DiscoverState>>,
+  discoverStates: Array<Array<DiscoveryState>>,
 }
 
-export enum DiscoverState {
+export enum DiscoveryState {
   hidden = "hidden", 
   wall = "wall", 
   no_wall = "no_wall",
@@ -38,7 +38,7 @@ function Maze({ discoverStates } : Props) {
   );
 }
 
-function GridSegment(rowIndex: number, colIndex: number, state: DiscoverState) {
+function GridSegment(rowIndex: number, colIndex: number, state: DiscoveryState) {
   const isVerticalWall = colIndex % 2 === 0;
   const isHorizontalWall = rowIndex % 2 === 0;
   const isWall = isVerticalWall || isHorizontalWall;

@@ -1,4 +1,4 @@
-import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../positions'
+import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../util/positions'
 import image from './../assets/robot.png'
 
 interface Props {

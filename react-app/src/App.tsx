@@ -1,5 +1,5 @@
 import Dropdown from "./components/Dropdown";
-import Maze, { DiscoverState } from "./components/Maze";
+import Maze, { DiscoveryState } from "./components/Maze";
 import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
@@ -8,20 +8,20 @@ import WebSocketComponent from "./components/WebSocketComponent";
 
 function initStates(size: number) {
   const stateDimension = 2*size + 1;
-  const states: Array<Array<DiscoverState>> = [];
+  const states: Array<Array<DiscoveryState>> = [];
   for (let i = 0; i < stateDimension; i++) {
     states[i] = [];
     for (let j = 0; j < stateDimension; j++) {
-      states[i][j] = DiscoverState.hidden;
+      states[i][j] = DiscoveryState.hidden;
     }
   }
 
-  states[0][1] = DiscoverState.no_wall;
-  states[1][1] = DiscoverState.path;
-  states[1][0] = DiscoverState.wall;
-  states[2][1] = DiscoverState.wall;
-  states[1][2] = DiscoverState.no_wall;
-  states[1][3] = DiscoverState.target;
+  states[0][1] = DiscoveryState.no_wall;
+  states[1][1] = DiscoveryState.path;
+  states[1][0] = DiscoveryState.wall;
+  states[2][1] = DiscoveryState.wall;
+  states[1][2] = DiscoveryState.no_wall;
+  states[1][3] = DiscoveryState.target;
 
   return states;
 }

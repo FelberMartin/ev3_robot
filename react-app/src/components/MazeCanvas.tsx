@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { getCanvasMiddleTilePosition, overallSize } from '../positions'
+import { getCanvasMiddleTilePosition, overallSize } from '../util/positions'
 
 const MazeCanvas = props => {
   

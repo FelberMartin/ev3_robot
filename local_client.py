@@ -3,9 +3,11 @@ from time import sleep
 from flask import Flask, request, Response
 from pybricks.parameters import Port
 from commands import Command
+from flask_cors import CORS
 
 import requests
 import threading
+import json
 
 import vis.visualization as visualization
 
@@ -15,7 +17,7 @@ def connectBluetooth():
     global isConnected, client, mbox
     client = BluetoothMailboxClient()
     mbox = TextMailbox('talk', client)
-    print("connecting to brick ...")
+    print("[EV3] connecting to brick ...")
     try:
         client.connect("00:17:EC:ED:1E:3D")
         mbox.send("ready")
@@ -23,12 +25,13 @@ def connectBluetooth():
         isConnected = True
     except:
         isConnected = False
-        print("Could not connect to brick")
+        print("[EV3] Could not connect to brick")
         sleep(5)
         connectBluetooth()
 
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/forward', methods=['POST'])
 def forward():
@@ -62,8 +65,10 @@ def motor():
 @app.route('/all_measures', methods=['POST'])    
 def all_measures():
     response = send_command(request, Command.ALL_MEASURES, sync=True)
+    if type(response) != str:
+        return response
     response = response.replace("'", '"')   # CPEE requires double quotes
-    return response
+    return json.loads(response)
 
 def send_command(request, command, sync=False):
     if not isConnected:
@@ -100,13 +105,13 @@ def send_callbacks():
 
         last_response = response
 
-        print("Received response from EV3: ", response)
+        print("[EV3] Received response from EV3: ", response)
         callback_url = response.split(",")[0]
         data = response.split(",")[1]
         if "http" not in callback_url:
             continue
 
-        print("Sending response to callback url: ", callback_url)
+        print("[EV3] Sending response to callback url: ", callback_url)
         requests.put(callback_url, data=data)
 
 # ------------------------- Receiving data from CPEE ---------------------------    
@@ -120,9 +125,14 @@ def display():
     return visualization.display()
 
 
-@app.route('/data', methods=['GET'])
+@app.route('/allRunData', methods=['GET'])
 def data():
     return visualization.getData()
+
+@app.route('/currentRunData', methods=['GET'])
+def currentRun():
+    return visualization.getCurrentRunData()
+
 
 # Send heartbeats to EV3
 def sendHeartbeats():
@@ -130,7 +140,7 @@ def sendHeartbeats():
     counter = 0
     while True:
         if not isConnected:
-            print("Connecting to EV3")
+            print("[EV3] Connecting to EV3")
             connectBluetooth()
 
         sleep(3)
@@ -139,11 +149,11 @@ def sendHeartbeats():
             callback_url = "heartbeatcallback_" + str(counter)
             counter += 1
             mbox.send(callback_url + "," + Command.HEARTBEAT)
-            print("Sent heartbeat")
+            print("[EV3] Sent heartbeat")
         except Exception as e:
             print(e)
             isConnected = False
-            print("Could not send heartbeat")
+            print("[EV3] Could not send heartbeat")
             connectBluetooth()
 
 def runServer():
