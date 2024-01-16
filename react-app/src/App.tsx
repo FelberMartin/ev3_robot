@@ -13,6 +13,7 @@ function App() {
   let [displayInfo, setDisplayInfo] = useState<RunDisplayInfo>(new RunDisplayInfo());
   let [selectedRun, setSelectedRun] = useState<string>("");
   let [selectedRunData, setSelectedRunData] = useState<any[]>([]);
+  let [playTimestamps, setPlayTimestamps] = useState<Date[]>([]);
 
   useEffect(() => {
     getAllRunData().then((data) => {
@@ -20,7 +21,15 @@ function App() {
     })
   }, []);
 
+  useEffect(() => {
+    if (selectedRunData.length > 0) {
+      let timestamps = selectedRunData.map(x => new Date(x["stream:timestamp"]));
+      setPlayTimestamps(timestamps);
+    }
+  }, [selectedRunData]);
+
   let onSelected = (item: string) => {
+    setDisplayInfo(new RunDisplayInfo());
     setSelectedRun(item);
     let stringContent = allRunData.filter(x => x.id === item)[0].content;
     let parsedContent = JSON.parse(stringContent);
@@ -39,7 +48,7 @@ function App() {
     <h1>EV3 Maze Solver</h1>
     <br />
     <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected} />
-    <PlayManager onUpdate={onPlayUpdate} timestamps={selectedRunData.map(x => new Date(x["stream:timestamp"]))} />
+    <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
     <div className="mazeSpacer" />
     <div>
       <MazeCanvas/>

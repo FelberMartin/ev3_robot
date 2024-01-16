@@ -1,3 +1,4 @@
+import { on } from 'events';
 import React, { useState, useEffect } from 'react';
 
 interface Props {
@@ -9,6 +10,12 @@ interface Props {
 const PlayManager = ({ onUpdate, timestamps }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+    setIsPlaying(false);
+  }, [timestamps]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -30,9 +37,11 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
           setCurrentIndex(prevIndex => prevIndex + 1);
         }, duration);
       } else {
+        onUpdate(currentIndex, timestamps[currentIndex].getTime() - start);
         console.log("Playback finished");
         // Playback finished, stop playing
         setIsPlaying(false);
+        setIsFinished(true);
       }
     };
 
@@ -46,6 +55,8 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
 
   const handlePlayClick = () => {
     // Start playback by setting isPlaying to true
+    setIsFinished(false);
+    setCurrentIndex(0);
     setIsPlaying(true);
   };
 
@@ -56,8 +67,8 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
 
   return (
     <div>
-      <button onClick={handlePlayClick} disabled={isPlaying}>
-        Play
+      <button onClick={handlePlayClick} disabled={isPlaying || timestamps.length == 0}>
+        {isFinished ? "Replay" : "Play"}
       </button>
       <button onClick={handleStopClick} disabled={!isPlaying}>
         Stop
