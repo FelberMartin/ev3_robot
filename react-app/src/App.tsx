@@ -6,6 +6,7 @@ import Robot from "./components/Robot";
 import { useEffect, useState } from "react";
 import { RunDisplayInfo, extractRunDisplayInfoTrunctated, getAllRunData } from "./util/RunData";
 import PlayManager from "./components/PlayManager";
+import SensorDataDisplay from "./components/SensorDataDisplay";
 
 
 function App() {
@@ -50,10 +51,15 @@ function App() {
     <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected} />
     <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
     <div className="mazeSpacer" />
-    <div>
-      <MazeCanvas path={displayInfo.path} />
-      <Robot info={displayInfo} show={selectedRun !== ""} />
-      <Maze discoverStates={displayInfo.discoveryStates}/>
+    <div style={{ display: 'flex' }}>
+      <div>
+        <MazeCanvas path={displayInfo.path} />
+        <Robot info={displayInfo} show={selectedRun !== ""} />
+        <Maze discoverStates={displayInfo.discoveryStates}/>
+      </div>
+      <div>
+        <SensorDataDisplay sensorData={displayInfo.sensorData} />
+      </div>
     </div>
   </div>
 }

@@ -1,11 +1,25 @@
+import exp from "constants";
 import { DiscoveryState } from "../components/Maze";
 import { gridSegmentCounts } from "./positions";
+
+// Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
+interface SensorData {
+    color_sensor: number;
+    infrared_sensor: number;
+    motor_left_angle: number;
+    motor_left_speed: number;
+    motor_right_angle: number;
+    motor_right_speed: number;
+}
+
+export type { SensorData };
 
 class RunDisplayInfo {
     position: [number, number];
     rotation: number;
     path: [number, number][];
     discoveryStates: DiscoveryState[][];
+    sensorData: SensorData;
 
     constructor() {
         this.position = [0, -1];
@@ -18,9 +32,35 @@ class RunDisplayInfo {
                 this.discoveryStates[i][j] = DiscoveryState.hidden;
             }
         }
+        this.sensorData = {
+            color_sensor: 20,
+            infrared_sensor: 50,
+            motor_left_angle: 0,
+            motor_left_speed: 0,
+            motor_right_angle: 0,
+            motor_right_speed: 0
+        };
     }
 
-    moveForward() {
+    applyRunDataEntry(runDataEntry: any) {
+        let source = runDataEntry["stream:source"]
+        if (source === "model") {
+            let command = runDataEntry["stream:value"];
+            // command can be "forward", "left", "right"
+            if (command === "forward") {
+                this._moveForward();
+            } else if (command === "left") {
+                this.rotation = (this.rotation + 270) % 360;
+            } else if (command === "right") {
+                this.rotation = (this.rotation + 90) % 360;
+            }
+        } else if (source === "robot") {
+            let sensorData = runDataEntry["stream:value"];
+            this.sensorData = sensorData;
+        }
+    }
+
+    _moveForward() {
         let x = this.position[0];
         let y = this.position[1];
         if (this.rotation === 0) {
@@ -36,6 +76,7 @@ class RunDisplayInfo {
         this.path.push([x, y]);
         // TODO: update discoveryStates
     }
+
 }
 
 function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number) : RunDisplayInfo {
@@ -53,18 +94,7 @@ function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number
 function extractRunDisplayInfo(runData: Array<any>) : RunDisplayInfo {
     let info = new RunDisplayInfo();
     for (let i = 0; i < runData.length; i++) {
-        let type = runData[i]["stream:source"]
-        if (type === "model") {
-            let command = runData[i]["stream:value"];
-            // command can be "forward", "left", "right"
-            if (command === "forward") {
-                info.moveForward();
-            } else if (command === "left") {
-                info.rotation = (info.rotation + 270) % 360;
-            } else if (command === "right") {
-                info.rotation = (info.rotation + 90) % 360;
-            }
-        }
+        info.applyRunDataEntry(runData[i]);
     }
     return info;
 }

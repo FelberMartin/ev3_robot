@@ -89,6 +89,7 @@ def _store_stream_point(stream_point):
     if current_stream_file is None:
         raise Exception("No stream file is currently open")
     
+    # TODO: Manually add the timestamp to the stream point, as the data from CPEE is only on a second basis, we need milliseconds.
     current_data.append(stream_point)
 
     with open(f"./vis/streams/{current_stream_file}", 'w') as f:
