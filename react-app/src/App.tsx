@@ -23,13 +23,14 @@ function App() {
   let onSelected = (item: string) => {
     setSelectedRun(item);
     let stringContent = allRunData.filter(x => x.id === item)[0].content;
-    console.log(stringContent);
     let parsedContent = JSON.parse(stringContent);
     setSelectedRunData(parsedContent);
   }
 
   let onPlayUpdate = (index: number, durationMs: number) => {
+    console.log("onPlayUpdate", index, durationMs);
     let info = extractRunDisplayInfoTrunctated(selectedRunData, durationMs)
+    console.log(info);
     setDisplayInfo(info);
   }
 

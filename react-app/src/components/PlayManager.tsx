@@ -30,6 +30,7 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
           setCurrentIndex(prevIndex => prevIndex + 1);
         }, duration);
       } else {
+        console.log("Playback finished");
         // Playback finished, stop playing
         setIsPlaying(false);
       }
@@ -41,7 +42,7 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
 
     // Clean up timer on component unmount or when playback stops
     return () => clearTimeout(timer);
-  }, [currentIndex, isPlaying, timestamps]);
+  }, [currentIndex, isPlaying]);
 
   const handlePlayClick = () => {
     // Start playback by setting isPlaying to true

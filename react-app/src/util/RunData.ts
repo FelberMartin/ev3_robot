@@ -19,10 +19,28 @@ class RunDisplayInfo {
             }
         }
     }
+
+    moveForward() {
+        let x = this.position[0];
+        let y = this.position[1];
+        if (this.rotation === 0) {
+            y--;
+        } else if (this.rotation === 90) {
+            x++;
+        } else if (this.rotation === 180) {
+            y++;
+        } else if (this.rotation === 270) {
+            x--;
+        }
+        this.position = [x, y];
+        this.path.push([x, y]);
+        // TODO: update discoveryStates
+    }
 }
 
 function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number) : RunDisplayInfo {
-    let start = runData[0]["stream:timestamp"];
+    let startString = runData[0]["stream:timestamp"];
+    let start = new Date(startString);
     let end = new Date(start);
     end.setMilliseconds(end.getMilliseconds() + durationMs);
     let truncatedRunData = runData.filter((data) => {
@@ -40,10 +58,7 @@ function extractRunDisplayInfo(runData: Array<any>) : RunDisplayInfo {
             let command = runData[i]["stream:value"];
             // command can be "forward", "left", "right"
             if (command === "forward") {
-                let position = runData[i]["stream:position"];
-                info.position = [position[0], position[1]];
-                info.path.push([position[0], position[1]]);
-                // info.discoveryStates[position[0]][position[1]] = DiscoveryState.path;
+                info.moveForward();
             } else if (command === "left") {
                 info.rotation = (info.rotation + 270) % 360;
             } else if (command === "right") {
