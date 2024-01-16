@@ -1,7 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import { getCanvasMiddleTilePosition, overallSize } from '../util/positions'
 
-const MazeCanvas = props => {
+interface Props {
+  path: number[][]
+}
+
+const MazeCanvas = ({ path } : Props) => {
   
   const canvasRef = useRef(null)
 
@@ -22,18 +26,21 @@ const MazeCanvas = props => {
   const draw = (ctx, frameCount) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
-    // draw background a border around the canvas
-    ctx.strokeStyle = '#000000'
-    ctx.lineWidth = 5
-    ctx.strokeRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    
-    // const tileIndex = { x: 1, y: 0 }
-    // const {x, y} = getCanvasMiddleTilePosition(tileIndex.x, tileIndex.y);
-
-    // ctx.fillStyle = '#000000'
-    // ctx.beginPath()
-    // ctx.arc(x, y, 20*2, 0, 2*Math.PI)
-    // ctx.fill()
+    // Draw the path
+    ctx.beginPath()
+    for (let i = 0; i < path.length; i++) {
+        const {x, y} = getCanvasMiddleTilePosition(path[i][0], path[i][1]);
+        if (i === 0) {
+            ctx.moveTo(x, y)
+        } else {
+            ctx.lineTo(x, y)
+        }
+    }
+    ctx.lineWidth = 10
+    ctx.strokeStyle = '#FFA500'
+    ctx.lineJoin = 'round'
+    ctx.lineCap = 'round'
+    ctx.stroke()
   }
   
   useEffect(() => {
@@ -58,7 +65,7 @@ const MazeCanvas = props => {
     }
   }, [draw])
   
-  return <canvas ref={canvasRef} className="mazeCanvas" {...props} style={{
+  return <canvas ref={canvasRef} className="mazeCanvas" style={{
       width: overallSize,
       height: overallSize,
   }}

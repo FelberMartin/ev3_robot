@@ -51,7 +51,7 @@ function App() {
     <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
     <div className="mazeSpacer" />
     <div>
-      <MazeCanvas/>
+      <MazeCanvas path={displayInfo.path} />
       <Robot info={displayInfo} show={selectedRun !== ""} />
       <Maze discoverStates={displayInfo.discoveryStates}/>
     </div>
