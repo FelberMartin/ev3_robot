@@ -79,7 +79,7 @@ async function getAllRunData() : Promise<(any[] | null)[]> {
             throw new Error('Network response was not ok');
         }
 
-        const result = await response.json();
+        var result = await response.json();
         console.log('runData received');
         return result;
     } catch (error) {

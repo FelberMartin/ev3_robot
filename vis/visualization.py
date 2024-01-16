@@ -67,7 +67,7 @@ def _handle_data(full_json):
     global current_stream_file, current_data
     if 'state' in full_json['content']:
         if full_json['content']['state'] == 'running':
-            current_stream_file = full_json['timestamp']
+            current_stream_file = full_json['timestamp'] + ".json"
         elif full_json['content']['state'] == 'stopped':
             current_stream_file = None
             current_data = []
@@ -91,8 +91,8 @@ def _store_stream_point(stream_point):
     
     current_data.append(stream_point)
 
-    with open(f"./vis/streams/{current_stream_file}", 'a') as f:
-        f.write(str(stream_point) + "\n")
+    with open(f"./vis/streams/{current_stream_file}", 'w') as f:
+        f.write(json.dumps(current_data))
 
 def getData():
     _update_data()

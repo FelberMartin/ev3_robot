@@ -22,7 +22,10 @@ function App() {
 
   let onSelected = (item: string) => {
     setSelectedRun(item);
-    setSelectedRunData(allRunData.filter(x => x.id === item)[0]);
+    let stringContent = allRunData.filter(x => x.id === item)[0].content;
+    console.log(stringContent);
+    let parsedContent = JSON.parse(stringContent);
+    setSelectedRunData(parsedContent);
   }
 
   let onPlayUpdate = (index: number, durationMs: number) => {
