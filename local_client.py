@@ -8,24 +8,30 @@ from flask_cors import CORS
 import requests
 import threading
 import json
+import random
 
 import vis.visualization as visualization
 
 isConnected = False
 
+ev3_tag = "[EV3]"
+# Color the EV3 tag to be gray
+ev3_tag = "\033[90m" + ev3_tag + "\033[0m "
+
+
 def connectBluetooth():
     global isConnected, client, mbox
     client = BluetoothMailboxClient()
     mbox = TextMailbox('talk', client)
-    print("[EV3] connecting to brick ...")
+    print(ev3_tag, "connecting to brick ...")
     try:
         client.connect("00:17:EC:ED:1E:3D")
         mbox.send("ready")
-        print("connected!")
+        print(ev3_tag, "\033[92mConnected!\033[0m")
         isConnected = True
     except:
         isConnected = False
-        print("[EV3] Could not connect to brick")
+        print(ev3_tag, "Could not connect to brick")
         sleep(5)
         connectBluetooth()
 
@@ -33,9 +39,34 @@ def connectBluetooth():
 app = Flask(__name__)
 CORS(app)
 
+
+@app.route('/is_connected', methods=['GET'])
+def is_connected():
+    return str(isConnected)
+
+
+algorithm_index = 0
+
+@app.route('/get_algorithm', methods=['GET'])
+def get_algorithm():
+    options = ["right_hand_rule", "left_hand_rule", "random_mouse"]
+    global algorithm_index
+    algorithm = options[algorithm_index]
+    # algorithm_index = (algorithm_index + 1) % len(options)    TODO: undo comment
+    return algorithm
+    # rnd = random.randint(0, len(options) - 1)
+    # return options[rnd]
+
 @app.route('/forward', methods=['POST'])
 def forward():
     return send_command(request, Command.FORWARD)
+
+@app.route('/turn', methods=['POST'])
+def turn():
+    direction = request.form['direction']
+    print(ev3_tag, "Turning ", direction)
+    assert(direction == "left" or direction == "right")
+    return send_command(request, Command.TURN_LEFT if direction == "left" else Command.TURN_RIGHT)
 
 @app.route('/left', methods=['POST'])
 def left():
@@ -100,18 +131,18 @@ def send_callbacks():
         
         response = mbox.read()
         if response == last_response or response == None:
-            sleep(0.001)
+            sleep(0.00001)
             continue
 
         last_response = response
 
-        print("[EV3] Received response from EV3: ", response)
+        print(ev3_tag, "Received response from EV3: ", response)
         callback_url = response.split(",")[0]
         data = response.split(",")[1]
         if "http" not in callback_url:
             continue
 
-        print("[EV3] Sending response to callback url: ", callback_url)
+        print(ev3_tag, "Sending response to callback url: ", callback_url)
         requests.put(callback_url, data=data)
 
 # ------------------------- Receiving data from CPEE ---------------------------    
@@ -120,11 +151,7 @@ def print_post_data():
     return visualization.handle_post_request(request)
 
 
-@app.route('/display', methods=['get'])
-def display():
-    return visualization.display()
-
-
+# ------------------------- Sending data to Frontend ---------------------------
 @app.route('/allRunData', methods=['GET'])
 def data():
     return visualization.getData()
@@ -140,7 +167,7 @@ def sendHeartbeats():
     counter = 0
     while True:
         if not isConnected:
-            print("[EV3] Connecting to EV3")
+            print(ev3_tag, "Connecting to EV3")
             connectBluetooth()
 
         sleep(3)
@@ -149,11 +176,11 @@ def sendHeartbeats():
             callback_url = "heartbeatcallback_" + str(counter)
             counter += 1
             mbox.send(callback_url + "," + Command.HEARTBEAT)
-            print("[EV3] Sent heartbeat")
+            print(ev3_tag, "Sent heartbeat")
         except Exception as e:
-            print(e)
+            print(ev3_tag, "\033[91m" + str(e) + "\033[0m")
             isConnected = False
-            print("[EV3] Could not send heartbeat")
+            print(ev3_tag, "Could not send heartbeat")
             connectBluetooth()
 
 def runServer():

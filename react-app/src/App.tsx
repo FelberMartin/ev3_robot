@@ -24,7 +24,7 @@ function App() {
 
   useEffect(() => {
     if (selectedRunData.length > 0) {
-      let timestamps = selectedRunData.map(x => new Date(x["stream:timestamp"]));
+      let timestamps = selectedRunData.map(x => new Date(x["backendTimestampMs"]));
       setPlayTimestamps(timestamps);
     }
   }, [selectedRunData]);

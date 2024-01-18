@@ -3,11 +3,16 @@ import json
 from flask_socketio import SocketIO, send
 import json
 import os
+import time
 
 # A list of CPEE instances that are allowed to send data to this server
-instances = {27148, 27207}
+instances = {"lego_maze_solver_central", "right_hand_rule", "left_hand_rule", "random_mouse"}
 
 current_stream_file = None
+
+cpee_tag = "[CPEE]"
+# Color the CPEE tag to be blue
+cpee_tag = "\033[94m" + cpee_tag + "\033[0m "
 
 data = []
 current_data = []
@@ -51,14 +56,14 @@ def handle_post_request(request):
         json_data = json_part.split('\r\n\r\n')[1].strip()
         parsed_json = json.loads(json_data)
 
-        if parsed_json['instance'] in instances:
-            print("[CPEE] Received data from CPEE: ", parsed_json)
+        if parsed_json['instance-name'] in instances:
+            print(cpee_tag, "Received data from CPEE: ", parsed_json)
             _handle_data(parsed_json)
         else:
-            print("[CPEE] Received data from unknown CPEE instance ", parsed_json['instance'], " - ", parsed_json['instance-name'])
+            print(cpee_tag, "Received data from unknown CPEE instance ", parsed_json['instance'], " - ", parsed_json['instance-name'])
 
     else:
-        print("[CPEE] No JSON data found")
+        print(cpee_tag, "No JSON data found")
 
     return 'OK'
 
@@ -89,7 +94,7 @@ def _store_stream_point(stream_point):
     if current_stream_file is None:
         raise Exception("No stream file is currently open")
     
-    # TODO: Manually add the timestamp to the stream point, as the data from CPEE is only on a second basis, we need milliseconds.
+    stream_point['backendTimestampMs'] = time.time() * 1000
     current_data.append(stream_point)
 
     with open(f"./vis/streams/{current_stream_file}", 'w') as f:
@@ -100,7 +105,6 @@ def getData():
     return data
 
 def getCurrentRunData():
-    global current_stream_file
     if current_stream_file is None:
         return []
 
