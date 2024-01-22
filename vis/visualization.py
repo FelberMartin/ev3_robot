@@ -85,6 +85,12 @@ def _handle_probe_data(full_json):
     datastream = full_json['datastream']
     stream_point = datastream[0]['stream:point']
 
+    if stream_point['stream:id'] == "algo":
+        global current_stream_file
+        algo = stream_point['stream:value']
+        current_stream_file = algo + current_stream_file
+        return
+
     print("+++ " + str(stream_point))
     _store_stream_point(stream_point)
     

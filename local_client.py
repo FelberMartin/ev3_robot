@@ -52,10 +52,8 @@ def get_algorithm():
     options = ["right_hand_rule", "left_hand_rule", "random_mouse"]
     global algorithm_index
     algorithm = options[algorithm_index]
-    # algorithm_index = (algorithm_index + 1) % len(options)    TODO: undo comment
+    algorithm_index = (algorithm_index + 1) % len(options)
     return algorithm
-    # rnd = random.randint(0, len(options) - 1)
-    # return options[rnd]
 
 @app.route('/forward', methods=['POST'])
 def forward():

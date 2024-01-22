@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SensorData } from '../util/RunData';
 import './SensorDataDisplay.css';
 
@@ -7,6 +7,48 @@ interface Props {
 }
 
 const SensorDataDisplay = ({ sensorData } : Props) => {
+  // State variables to track the animated values
+  const [animatedMotorLeftSpeed, setAnimatedMotorLeftSpeed] = useState(sensorData.motor_left_speed);
+  const [animatedMotorRightSpeed, setAnimatedMotorRightSpeed] = useState(sensorData.motor_right_speed);
+  const [animatedColorSensor, setAnimatedColorSensor] = useState(sensorData.color_sensor);
+  const [animatedInfraredSensor, setAnimatedInfraredSensor] = useState(sensorData.infrared_sensor);
+
+  // Function to smoothly update the animated values
+  const animateValue = (currentValue, targetValue, setterFunction) => {
+    const animationDuration = 400; // Adjust as needed
+    const framesPerSecond = 120;
+    const totalFrames = animationDuration / (1000 / framesPerSecond);
+    const frameIncrement = (targetValue - currentValue) / totalFrames;
+
+    let currentFrame = 0;
+
+    const animate = () => {
+      currentFrame++;
+      const nextValue = currentValue + frameIncrement;
+      setterFunction(nextValue);
+
+      if (currentFrame < totalFrames) {
+        currentValue = nextValue;
+        requestAnimationFrame(animate);
+      }
+    };
+
+    animate();
+  };
+
+  // Use useEffect to trigger animation when sensorData changes
+  useEffect(() => {
+    animateValue(animatedMotorLeftSpeed, sensorData.motor_left_speed, setAnimatedMotorLeftSpeed);
+    animateValue(animatedMotorRightSpeed, sensorData.motor_right_speed, setAnimatedMotorRightSpeed);
+    animateValue(animatedColorSensor, sensorData.color_sensor, setAnimatedColorSensor);
+    var infraredTarget = sensorData.infrared_sensor;
+    if (infraredTarget > 99) {
+      infraredTarget = 99;
+    }
+    animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
+  }, [sensorData]);
+
+
   const renderMotorSpeed = (speed: number) => {
     // Calculate the height of the red rectangle based on the absolute value of the speed
     const height = Math.abs(speed) * 0.1;
@@ -37,7 +79,7 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
           style={{
             width: rectWidth + 'px',
             height: '20px',
-            backgroundColor: 'rgb(' + (250 - data * 3) + ', 120, 120)',
+            backgroundColor: 'rgb(' + 255 + ', ' + (100 + data * 3) + ', ' + (100 + data * 3) + ')',
           }}
         />
       </div>
@@ -58,7 +100,7 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
           style={{
             width: rectWidth + 'px',
             height: '20px',
-            backgroundColor: 'rgb(0, 0, ' + data + ')',
+            backgroundColor: 'rgb(' + data + ', 0, ' + data * 3 + ')',
           }}
         />
       </div>
@@ -66,18 +108,19 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   };
 
   return (
-    <div>
-      <h2>Motor</h2>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {renderMotorSpeed(sensorData.motor_left_speed)}
-        {renderMotorSpeed(sensorData.motor_right_speed)}
+    <div style={{margin: "8px"}}>
+      <h4>Motors</h4>
+      <div style={{ display: 'flex' }}>
+        {renderMotorSpeed(animatedMotorLeftSpeed)}
+        {renderMotorSpeed(animatedMotorRightSpeed)}
       </div>
 
-      <h2>Color</h2>
-      {renderColorSensorData(sensorData.color_sensor)}
+      <h4>Color <br/>Sensor: {Math.round(animatedColorSensor)}</h4>
+      {renderColorSensorData(animatedColorSensor)}
 
-      <h2>Infrared</h2>
-      {renderInfraredSensorData(sensorData.infrared_sensor)}
+      
+      <h4>Infrared <br/>Sensor: {Math.round(animatedInfraredSensor)}</h4>
+      {renderInfraredSensorData(animatedInfraredSensor)}
     </div>
   );
 };
