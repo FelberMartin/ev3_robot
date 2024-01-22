@@ -90,6 +90,8 @@ def _handle_probe_data(full_json):
         algo = stream_point['stream:value']
         current_stream_file = algo + current_stream_file
         return
+    
+    # TODO: get CPEE subscriptions to work, needed for correct animation of robot
 
     print("+++ " + str(stream_point))
     _store_stream_point(stream_point)

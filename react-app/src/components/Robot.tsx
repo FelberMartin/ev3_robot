@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { RunDisplayInfo } from '../util/RunData';
 import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../util/positions'
 import image from './../assets/robot.png'
+import { animateValue } from '../util/Animation';
 
 interface Props {
     info: RunDisplayInfo
@@ -19,6 +21,16 @@ const Robot = ({ info, show } : Props) => {
         return null
     }
 
+    let [animatedX, setAnimatedX] = useState(imageTopLeft.x);
+    let [animatedY, setAnimatedY] = useState(imageTopLeft.y);
+    let [animatedRotation, setAnimatedRotation] = useState(info.rotation);
+
+    useEffect(() => {
+        animateValue(animatedX, imageTopLeft.x, setAnimatedX, 1000);
+        animateValue(animatedY, imageTopLeft.y, setAnimatedY, 1000);
+        animateValue(animatedRotation, info.rotation, setAnimatedRotation, 300);
+    }, [info]);
+
     return <div className="robot" style={{
         width: overallSize,
         height: overallSize,
@@ -26,9 +38,9 @@ const Robot = ({ info, show } : Props) => {
         <img src={image} style={{
             width: robotSize,
             height: robotSize,
-            marginLeft: imageTopLeft.x,
-            marginTop: imageTopLeft.y,
-            transform: `rotate(${info.rotation}deg)`
+            marginLeft: animatedX,
+            marginTop: animatedY,
+            transform: `rotate(${animatedRotation}deg)`
         }} />
     </div>
 }

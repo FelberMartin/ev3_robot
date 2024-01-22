@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SensorData } from '../util/RunData';
 import './SensorDataDisplay.css';
+import { animateValue } from '../util/Animation';
 
 interface Props {
   sensorData: SensorData;
@@ -12,29 +13,6 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   const [animatedMotorRightSpeed, setAnimatedMotorRightSpeed] = useState(sensorData.motor_right_speed);
   const [animatedColorSensor, setAnimatedColorSensor] = useState(sensorData.color_sensor);
   const [animatedInfraredSensor, setAnimatedInfraredSensor] = useState(sensorData.infrared_sensor);
-
-  // Function to smoothly update the animated values
-  const animateValue = (currentValue, targetValue, setterFunction) => {
-    const animationDuration = 400; // Adjust as needed
-    const framesPerSecond = 120;
-    const totalFrames = animationDuration / (1000 / framesPerSecond);
-    const frameIncrement = (targetValue - currentValue) / totalFrames;
-
-    let currentFrame = 0;
-
-    const animate = () => {
-      currentFrame++;
-      const nextValue = currentValue + frameIncrement;
-      setterFunction(nextValue);
-
-      if (currentFrame < totalFrames) {
-        currentValue = nextValue;
-        requestAnimationFrame(animate);
-      }
-    };
-
-    animate();
-  };
 
   // Use useEffect to trigger animation when sensorData changes
   useEffect(() => {
