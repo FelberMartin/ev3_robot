@@ -15,7 +15,7 @@ export enum DiscoveryState {
 function Maze({ discoverStates } : Props) {
 
   const getDiscoverState = function(row: number, col: number) {
-    return discoverStates[row][col]
+    return discoverStates[col][row]
   }
 
   return (

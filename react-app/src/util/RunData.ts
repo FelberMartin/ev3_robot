@@ -1,6 +1,7 @@
 import exp from "constants";
 import { DiscoveryState } from "../components/Maze";
-import { gridSegmentCounts } from "./positions";
+import { getDiscoveryStateIndices, getWallIndices, gridSegmentCounts } from "./positions";
+import { get } from "http";
 
 // Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
 interface SensorData {
@@ -32,6 +33,7 @@ class RunDisplayInfo {
                 this.discoveryStates[i][j] = DiscoveryState.hidden;
             }
         }
+        this.discoveryStates[1][0] = DiscoveryState.no_wall;
         this.sensorData = {
             color_sensor: 20,
             infrared_sensor: 50,
@@ -54,6 +56,7 @@ class RunDisplayInfo {
             } else if (command === "right") {
                 this.rotation = (this.rotation + 90) % 360;
             }
+            this._updateDiscoveryStates();
         } else if (source === "robot") {
             let sensorData = runDataEntry["stream:value"];
             this.sensorData = sensorData;
@@ -74,7 +77,23 @@ class RunDisplayInfo {
         }
         this.position = [x, y];
         this.path.push([x, y]);
-        // TODO: update discoveryStates
+    }
+
+    _updateDiscoveryStates() {
+        // Tiles
+        let [x, y] = getDiscoveryStateIndices(this.position);
+        this.discoveryStates[x][y] = DiscoveryState.path;
+        if (this.sensorData.color_sensor >= 40) {
+            this.discoveryStates[x][y] = DiscoveryState.target;
+        }
+
+        // Walls
+        let [xWall, yWall] = getWallIndices(this.position, this.rotation);
+        if (this.sensorData.infrared_sensor <= 40) {
+            this.discoveryStates[xWall][yWall] = DiscoveryState.wall;
+        } else {
+            this.discoveryStates[xWall][yWall] = DiscoveryState.no_wall;
+        }
     }
 
 }
