@@ -71,7 +71,7 @@ def handle_post_request(request):
 def _handle_data(full_json):
     global current_stream_file, current_data
     if 'state' in full_json['content']:
-        if full_json['content']['state'] == 'running':
+        if current_stream_file == None and full_json['content']['state'] == 'running':
             current_stream_file = full_json['timestamp'] + ".json"
         elif full_json['content']['state'] == 'stopped':
             current_stream_file = None
@@ -112,3 +112,4 @@ def getCurrentRunData():
 
 
 
+# TODO: The subprocesses on CPEE currently do not work correctly.
