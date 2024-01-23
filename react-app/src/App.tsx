@@ -48,8 +48,10 @@ function App() {
   return <div className="root">
     <h1>EV3 Maze Solver</h1>
     <br />
-    <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected} />
-    <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
+    <div style={{ display: 'flex', alignItems: "", marginTop: "40px" }}>
+      <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
+      <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected} />
+    </div>
     <div className="mazeSpacer" />
     <div style={{ display: 'flex' }}>
       <div>

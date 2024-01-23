@@ -71,7 +71,7 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
     <div>
       <button
       onClick={handlePlayClick}
-      className="btn btn-primary" // Use Bootstrap button classes
+      className="btn btn-primary play" // Use Bootstrap button classes
       disabled={timestamps.length === 0}
     >
       {isPlaying ? (

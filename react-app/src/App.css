@@ -10,7 +10,7 @@
 }
 
 .mazeSpacer {
-    height: 160px;
+    height: 120px;
 }
 
 .robot {
@@ -45,5 +45,9 @@
 
 .wall.no_wall {
     background-color: lightgrey;
+}
+
+.btn.play {
+    margin: 10px;
 }
 
