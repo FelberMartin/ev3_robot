@@ -76,11 +76,11 @@ def right():
 
 @app.route('/infrared', methods=['POST'])
 def infrared():
-    return send_command(request, Command.INFRARED_SENSOR, sync=True)
+    return send_command(request, Command.INFRARED_SENSOR)
 
 @app.route('/color', methods=['POST'])
 def color():
-    return send_command(request, Command.COLOR_SENSOR, sync=True)
+    return send_command(request, Command.COLOR_SENSOR)
 
 @app.route('/motor', methods=['POST'])
 def motor():
@@ -89,17 +89,17 @@ def motor():
     measure = request.form['measure']
     assert(measure == "speed" or measure == "angle")
     
-    return send_command(request, "motor_" + side + "_" + measure, sync=True)
+    return send_command(request, "motor_" + side + "_" + measure)
 
 @app.route('/all_measures', methods=['POST'])    
 def all_measures():
-    response = send_command(request, Command.ALL_MEASURES, sync=True)
+    return send_command(request, Command.ALL_MEASURES)
     if type(response) != str:
         return response
     response = response.replace("'", '"')   # CPEE requires double quotes
     return json.loads(response)
 
-def send_command(request, command, sync=False):
+def send_command(request, command):
     if not isConnected:
         return Response("EV3 not connected", status=503)
     
@@ -107,17 +107,8 @@ def send_command(request, command, sync=False):
     if "CPEE_CALLBACK" in request.headers:
         callback_url = request.headers["CPEE_CALLBACK"]
 
-    if sync:
-        sent_callback_url = callback_url[4:]    # Remove "http" from callback url
-        mbox.send(sent_callback_url + "," + command)
-        while True:
-            mbox.wait()
-            response = mbox.read()
-            if sent_callback_url in response:
-                return response.split(",", 1)[1]
-    else:    
-        mbox.send(callback_url + "," + command)
-        return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})
+    mbox.send(callback_url + "," + command)
+    return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})
 
 def send_callbacks():
     last_response = None
@@ -126,7 +117,6 @@ def send_callbacks():
             sleep(3)
             continue
 
-        
         response = mbox.read()
         if response == last_response or response == None:
             sleep(0.00001)
@@ -136,8 +126,14 @@ def send_callbacks():
 
         print(ev3_tag, "Received response from EV3: ", response)
         callback_url = response.split(",")[0]
-        data = response.split(",")[1]
+        data = response.split(",", 1)[1]
         if "http" not in callback_url:
+            continue
+
+        if "'" in data:
+            data = data.replace("'", '"')
+            data = json.loads(data)
+            requests.put(callback_url, json=data)
             continue
 
         print(ev3_tag, "Sending response to callback url: ", callback_url)

@@ -1,5 +1,7 @@
 import { on } from 'events';
 import React, { useState, useEffect } from 'react';
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Import Bootstrap Icons CSS
+
 
 interface Props {
     onUpdate: (index: number, durationMs: number) => void;
@@ -54,25 +56,33 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
   }, [currentIndex, isPlaying]);
 
   const handlePlayClick = () => {
-    // Start playback by setting isPlaying to true
-    setIsFinished(false);
-    setCurrentIndex(0);
-    setIsPlaying(true);
-  };
-
-  const handleStopClick = () => {
-    // Stop playback by setting isPlaying to false
-    setIsPlaying(false);
+    if (isPlaying) {
+      // Stop playback by setting isPlaying to false
+      setIsPlaying(false);
+    } else {
+      // Start playback by setting isPlaying to true
+      setIsFinished(false);
+      setCurrentIndex(0);
+      setIsPlaying(true);
+    }
   };
 
   return (
     <div>
-      <button onClick={handlePlayClick} disabled={isPlaying || timestamps.length == 0}>
-        {isFinished ? "Replay" : "Play"}
-      </button>
-      <button onClick={handleStopClick} disabled={!isPlaying}>
-        Stop
-      </button>
+      <button
+      onClick={handlePlayClick}
+      className="btn btn-primary" // Use Bootstrap button classes
+      disabled={timestamps.length === 0}
+    >
+      {isPlaying ? (
+        <i className="bi-pause-fill" style={{fontSize: "30px", color: "white"}} ></i>
+      ) : (isFinished ? (
+        <i className="bi-arrow-repeat" style={{fontSize: "30px", color: "white"}} ></i>
+      ) : (
+        <i className="bi-play-fill" style={{fontSize: "30px", color: "white"}} ></i>
+      ))}
+
+    </button>
     </div>
   );
 };
