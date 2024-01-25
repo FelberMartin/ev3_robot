@@ -1,7 +1,7 @@
 
 const size = 4;
-const tileSize = 140;
-const wallSize = 14;
+const tileSize = 120;
+const wallSize = 12;
 
 const tileCount = size;
 const wallCount = size + 1;

@@ -86,18 +86,17 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   };
 
   return (
-    <div style={{margin: "8px"}}>
-      <h4>Motors</h4>
+    <div style={{ marginLeft: "-60px"}}>
+      <h5>Motors</h5>
       <div style={{ display: 'flex' }}>
         {renderMotorSpeed(animatedMotorLeftSpeed)}
         {renderMotorSpeed(animatedMotorRightSpeed)}
       </div>
-
-      <h4>Color <br/>Sensor: {Math.round(animatedColorSensor)}</h4>
+      <br />
+      <h5>Color <br/>Sensor: {Math.round(animatedColorSensor)}</h5>
       {renderColorSensorData(animatedColorSensor)}
-
-      
-      <h4>Infrared <br/>Sensor: {Math.round(animatedInfraredSensor)}</h4>
+      <br />
+      <h5>Infrared <br/>Sensor: {Math.round(animatedInfraredSensor)}</h5>
       {renderInfraredSensorData(animatedInfraredSensor)}
     </div>
   );

@@ -80,6 +80,9 @@ def _handle_data(full_json):
     if full_json['topic'] == 'stream' and full_json['datastream'] is not None:
         _handle_probe_data(full_json)
 
+    elif full_json['topic'] == 'activity':
+        _handle_activity_data(full_json)
+
 
 def _handle_probe_data(full_json):
     datastream = full_json['datastream']
@@ -91,10 +94,13 @@ def _handle_probe_data(full_json):
         current_stream_file = algo + current_stream_file
         return
     
-    # TODO: get CPEE subscriptions to work, needed for correct animation of robot
-
     print("+++ " + str(stream_point))
     _store_stream_point(stream_point)
+
+
+def _handle_activity_data(full_json):
+    content = full_json['content']
+    _store_stream_point(content)
     
     
 

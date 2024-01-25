@@ -9,6 +9,20 @@
     background-color: darkslategray;
 }
 
+.wholeMaze {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(47, 102, 93);
+    border: 2px solid rgb(59, 68, 66);
+    border-radius: 8px;
+}
+
+.wholeMaze > * {
+    margin: 40px;
+}
+
 .mazeSpacer {
     height: 120px;
 }

@@ -5,13 +5,14 @@ import { useState } from "react";
 interface Props {
   items: Array<string>;
   onSelected: (item: string) => void;
+  defaultValue: string;
 }
 
-function Dropdown({items, onSelected}: Props) {
-  const [selectedFile, setSelectedFile] = useState("None");
+function Dropdown({items, onSelected, defaultValue}: Props) {
+  const [selectedFile, setSelectedFile] = useState(defaultValue);
 
   let _items = structuredClone(items);
-  _items.push("None");
+  _items.push(defaultValue);
 
   return (
     <div className="dropdown">
@@ -21,7 +22,7 @@ function Dropdown({items, onSelected}: Props) {
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        {selectedFile === "None" ? "Select a file" : selectedFile }
+        {selectedFile}
       </button>
       <ul className="dropdown-menu">
         {_items.map((item) => (
@@ -32,7 +33,7 @@ function Dropdown({items, onSelected}: Props) {
             : "dropdown-item"
           } href="#" onClick={(event) => {
             setSelectedFile(item);
-            onSelected(item === "None" ? "" : item);
+            onSelected(item === defaultValue ? "" : item);
           }}>
             {item}
           </a>
