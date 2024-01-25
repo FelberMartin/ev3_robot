@@ -24,7 +24,7 @@ function Dropdown({items, onSelected, defaultValue}: Props) {
       >
         {selectedFile}
       </button>
-      <ul className="dropdown-menu">
+      <ul className="dropdown-menu dropdown-menu-dark">
         {_items.map((item) => (
           <li key={item}>
           <a className={
@@ -33,7 +33,7 @@ function Dropdown({items, onSelected, defaultValue}: Props) {
             : "dropdown-item"
           } href="#" onClick={(event) => {
             setSelectedFile(item);
-            onSelected(item === defaultValue ? "" : item);
+            onSelected(item);
           }}>
             {item}
           </a>

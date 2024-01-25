@@ -73,7 +73,7 @@ function App() {
   }
 
 
-  return <div className="root">
+  return <div className="root" style={{ dataBsTheme: "dark" }}>
     <h1>EV3 Maze Solver</h1>
     <br />
     <div style={{ display: 'flex', alignItems: "", marginTop: "40px" }}>
@@ -85,8 +85,8 @@ function App() {
     <div className="mazeSpacer" />
     <div style={{ display: 'flex' }}>
       {wholeMaze(displayInfo, selectedRun !== "")}
-      {selectedRun2 !== "" && <div style={{width: "120px"}}/>}
-      {selectedRun2 !== "" && wholeMaze(displayInfo2, true)}
+      {selectedRun2 !== "None" && <div style={{width: "120px"}}/>}
+      {selectedRun2 !== "None" && wholeMaze(displayInfo2, true)}
     </div>
   </div>
 }

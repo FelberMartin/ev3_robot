@@ -51,7 +51,8 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
         display: 'flex', 
         alignItems: 'center', 
         border: 'solid black',
-        width: '100px' 
+        width: '100px',
+        borderRadius: '4px'
       }}>
         <div
           style={{
@@ -72,7 +73,8 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
         display: 'flex', 
         alignItems: 'center', 
         border: 'solid black', 
-        width: '100px' 
+        width: '100px', 
+        borderRadius: '4px'
       }}>
         <div
           style={{

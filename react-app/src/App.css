@@ -15,7 +15,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(47, 102, 93);
-    border: 2px solid rgb(59, 68, 66);
+    border: 3px solid rgb(59, 68, 66);
     border-radius: 8px;
 }
 
@@ -39,6 +39,7 @@
 
 .tile {
     background-color: gray;
+    border-radius: 8px;
 }
 
 .tile.path {
@@ -51,6 +52,7 @@
 
 .wall {
     background-color: black;
+    border-radius: 8px;
 }
 
 .wall.hidden {
