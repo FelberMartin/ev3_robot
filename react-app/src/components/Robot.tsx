@@ -17,10 +17,6 @@ const Robot = ({ info, show } : Props) => {
         y: y - robotSize / 2
     }
 
-    if (!show) {
-        return null
-    }
-
     let [animatedX, setAnimatedX] = useState(imageTopLeft.x);
     let [animatedY, setAnimatedY] = useState(imageTopLeft.y);
     let [animatedRotation, setAnimatedRotation] = useState(info.rotation);
@@ -34,6 +30,7 @@ const Robot = ({ info, show } : Props) => {
     return <div className="robot" style={{
         width: overallSize,
         height: overallSize,
+        opacity: show ? 1 : 0.5
     }}>
         <img src={image} style={{
             width: robotSize,

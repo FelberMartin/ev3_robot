@@ -103,12 +103,12 @@ function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number
         console.log("Trying to extract run display info from empty run data")
         return new RunDisplayInfo();
     }
-    let startString = runData[0]["stream:timestamp"];
+    let startString = runData[0]["backendTimestampMs"];
     let start = new Date(startString);
     let end = new Date(start);
     end.setMilliseconds(end.getMilliseconds() + durationMs);
     let truncatedRunData = runData.filter((data) => {
-        let timestamp = new Date(data["stream:timestamp"]);
+        let timestamp = new Date(data["backendTimestampMs"]);
         return timestamp >= start && timestamp <= end;
     });
     return extractRunDisplayInfo(truncatedRunData);

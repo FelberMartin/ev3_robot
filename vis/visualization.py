@@ -6,7 +6,7 @@ import os
 import time
 
 # A list of CPEE instances that are allowed to send data to this server
-instances = {"lego_maze_solver_central", "right_hand_rule", "left_hand_rule", "random_mouse", "test2"}
+instances = {"right_hand_rule", "left_hand_rule", "random_mouse", "test2"}
 
 current_stream_file = None
 
@@ -87,12 +87,6 @@ def _handle_data(full_json):
 def _handle_probe_data(full_json):
     datastream = full_json['datastream']
     stream_point = datastream[0]['stream:point']
-
-    if stream_point['stream:id'] == "algo":
-        global current_stream_file
-        algo = stream_point['stream:value']
-        current_stream_file = algo + current_stream_file
-        return
     
     print("+++ " + str(stream_point))
     _store_stream_point(stream_point)
@@ -106,7 +100,8 @@ def _handle_activity_data(full_json):
 
 def _store_stream_point(stream_point):
     if current_stream_file is None:
-        raise Exception("No stream file is currently open")
+        print("*** Error: No stream file is currently open")
+        return
     
     stream_point['backendTimestampMs'] = time.time() * 1000
     current_data.append(stream_point)

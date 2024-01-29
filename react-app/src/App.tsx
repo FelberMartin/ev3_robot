@@ -3,8 +3,8 @@ import Maze, { DiscoveryState } from "./components/Maze";
 import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
-import { useEffect, useState } from "react";
-import { RunDisplayInfo, extractRunDisplayInfoTrunctated, getAllRunData } from "./util/RunData";
+import { useEffect, useRef, useState } from "react";
+import { RunDisplayInfo, extractRunDisplayInfoTrunctated, getAllRunData, getCurrentRunData } from "./util/RunData";
 import PlayManager from "./components/PlayManager";
 import SensorDataDisplay from "./components/SensorDataDisplay";
 
@@ -14,6 +14,7 @@ function App() {
 
   let [displayInfo, setDisplayInfo] = useState<RunDisplayInfo>(new RunDisplayInfo());
   let [selectedRun, setSelectedRun] = useState<string>("Current");
+  const selectedRunRef = useRef<string>();
   let [selectedRunData, setSelectedRunData] = useState<any[]>([]);
   let [playDurations, setPlayDurations] = useState<number[]>([]);
 
@@ -41,6 +42,10 @@ function App() {
       mergedDurations.sort((a, b) => a - b);
       setPlayDurations(mergedDurations);
     }
+    if (selectedRun === "Current") {
+      console.log("selectedRunData", selectedRunData);
+      onPlayUpdate(0, 1000_000);
+    }
   }, [selectedRunData, selectedRunData2]);
 
   const extractDurations = (timestamps: Date[]) => {
@@ -54,10 +59,43 @@ function App() {
   let onSelected = (item: string) => {
     setDisplayInfo(new RunDisplayInfo());
     setSelectedRun(item);
+    if (item === "Current") {
+      return;
+    }
     let stringContent = allRunData.filter(x => x.id === item)[0].content;
     let parsedContent = JSON.parse(stringContent);
     setSelectedRunData(parsedContent);
   }
+
+  useEffect(() => {
+    selectedRunRef.current = selectedRun;
+  }, [selectedRun]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const updateCurrentRunData = async () => {
+      console.log("** updateCurrentRunData", selectedRunRef.current);
+      if (selectedRunRef.current !== "Current") {
+        return;
+      }
+      let data = await getCurrentRunData();
+      console.log("data", data);
+      if (isMounted && data !== null) {
+        setSelectedRunData(data);
+      }
+      if (isMounted) {
+        setTimeout(updateCurrentRunData, 200);
+      }
+    };
+
+    updateCurrentRunData();
+
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedRunRef.current]);
 
   let onSelected2 = (item: string) => {
     setDisplayInfo2(new RunDisplayInfo());
@@ -69,9 +107,9 @@ function App() {
 
   let onPlayUpdate = (index: number, durationMs: number) => {
     console.log("onPlayUpdate", index, durationMs);
-    let info = extractRunDisplayInfoTrunctated(selectedRunData, durationMs)
+    let info = extractRunDisplayInfoTrunctated(selectedRunData, durationMs);
     setDisplayInfo(info);
-    let info2 = extractRunDisplayInfoTrunctated(selectedRunData2, durationMs)
+    let info2 = extractRunDisplayInfoTrunctated(selectedRunData2, durationMs);
     setDisplayInfo2(info2);
   }
 
@@ -103,7 +141,7 @@ function App() {
     </div>
     <div className="mazeSpacer" />
     <div style={{ display: 'flex' }}>
-      {wholeMaze(displayInfo, selectedRun !== "")}
+      {wholeMaze(displayInfo, selectedRunData.length > 0)}
       {selectedRun2 !== "None" && <div style={{width: "120px"}}/>}
       {selectedRun2 !== "None" && wholeMaze(displayInfo2, true)}
     </div>
