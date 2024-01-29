@@ -26,9 +26,9 @@ const Robot = ({ info, show } : Props) => {
     let [animatedRotation, setAnimatedRotation] = useState(info.rotation);
 
     useEffect(() => {
-        animateValue(animatedX, imageTopLeft.x, setAnimatedX, 1000);
-        animateValue(animatedY, imageTopLeft.y, setAnimatedY, 1000);
-        animateValue(animatedRotation, info.rotation, setAnimatedRotation, 300);
+        animateValue(animatedX, imageTopLeft.x, setAnimatedX, 200);
+        animateValue(animatedY, imageTopLeft.y, setAnimatedY, 200);
+        animateValue(animatedRotation, info.rotation, setAnimatedRotation, 100);
     }, [info]);
 
     return <div className="robot" style={{

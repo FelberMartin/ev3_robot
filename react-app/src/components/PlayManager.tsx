@@ -5,11 +5,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css'; // Import Bootstrap Icons CSS
 
 interface Props {
     onUpdate: (index: number, durationMs: number) => void;
-    timestamps: Date[];
+    durations: number[];
 }
 
 
-const PlayManager = ({ onUpdate, timestamps }: Props) => {
+const PlayManager = ({ onUpdate, durations }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
@@ -17,16 +17,16 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
   useEffect(() => {
     setCurrentIndex(0);
     setIsPlaying(false);
-  }, [timestamps]);
+  }, [durations]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     const playNextPair = () => {
-      const start  = timestamps[0].getTime();
-      if (currentIndex < timestamps.length - 1) {
-        const timestamp1 = timestamps[currentIndex].getTime();
-        const timestamp2 = timestamps[currentIndex + 1].getTime();
+      const start  = durations[0];
+      if (currentIndex < durations.length - 1) {
+        const timestamp1 = durations[currentIndex];
+        const timestamp2 = durations[currentIndex + 1];
         
         // Calculate the duration between timestamp1 and timestamp2
         const duration = timestamp2 - timestamp1;
@@ -39,7 +39,7 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
           setCurrentIndex(prevIndex => prevIndex + 1);
         }, duration);
       } else {
-        onUpdate(currentIndex, timestamps[currentIndex].getTime() - start);
+        onUpdate(currentIndex, durations[currentIndex] - start);
         console.log("Playback finished");
         // Playback finished, stop playing
         setIsPlaying(false);
@@ -60,10 +60,17 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
       // Stop playback by setting isPlaying to false
       setIsPlaying(false);
     } else {
-      // Start playback by setting isPlaying to true
-      setIsFinished(false);
-      setCurrentIndex(0);
-      setIsPlaying(true);
+      if (isFinished) {
+        // Reset the playback
+        setCurrentIndex(0);
+        setIsFinished(false);
+        setIsPlaying(false); 
+        onUpdate(0, 0);
+      } else {
+        // Start playback by setting isPlaying to true
+        setIsPlaying(true);
+      }
+
     }
   };
 
@@ -72,7 +79,7 @@ const PlayManager = ({ onUpdate, timestamps }: Props) => {
       <button
       onClick={handlePlayClick}
       className="btn btn-primary play" // Use Bootstrap button classes
-      disabled={timestamps.length === 0}
+      disabled={durations.length === 0}
     >
       {isPlaying ? (
         <i className="bi-pause-fill" style={{fontSize: "30px", color: "white"}} ></i>

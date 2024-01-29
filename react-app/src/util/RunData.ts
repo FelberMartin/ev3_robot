@@ -99,6 +99,10 @@ class RunDisplayInfo {
 }
 
 function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number) : RunDisplayInfo {
+    if (runData.length === 0) {
+        console.log("Trying to extract run display info from empty run data")
+        return new RunDisplayInfo();
+    }
     let startString = runData[0]["stream:timestamp"];
     let start = new Date(startString);
     let end = new Date(start);

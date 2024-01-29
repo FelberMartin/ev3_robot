@@ -13,14 +13,13 @@ function App() {
   let [allRunData, setAllRunData] = useState<(any[] | null)[]>([]);
 
   let [displayInfo, setDisplayInfo] = useState<RunDisplayInfo>(new RunDisplayInfo());
-  let [selectedRun, setSelectedRun] = useState<string>("");
+  let [selectedRun, setSelectedRun] = useState<string>("Current");
   let [selectedRunData, setSelectedRunData] = useState<any[]>([]);
-  let [playTimestamps, setPlayTimestamps] = useState<Date[]>([]);
+  let [playDurations, setPlayDurations] = useState<number[]>([]);
 
   let [displayInfo2, setDisplayInfo2] = useState<RunDisplayInfo>(new RunDisplayInfo());
-  let [selectedRun2, setSelectedRun2] = useState<string>("");
+  let [selectedRun2, setSelectedRun2] = useState<string>("None");
   let [selectedRunData2, setSelectedRunData2] = useState<any[]>([]);
-  let [playTimestamps2, setPlayTimestamps2] = useState<Date[]>([]);
 
 
   useEffect(() => {
@@ -32,9 +31,25 @@ function App() {
   useEffect(() => {
     if (selectedRunData.length > 0) {
       let timestamps = selectedRunData.map(x => new Date(x["backendTimestampMs"]));
-      setPlayTimestamps(timestamps);
+      let durations = extractDurations(timestamps);
+      let durations2: number[] = [];
+      if (selectedRunData2.length > 0) {
+        let timestamps2 = selectedRunData2.map(x => new Date(x["backendTimestampMs"]));
+        durations2 = extractDurations(timestamps2);
+      }
+      let mergedDurations = durations.concat(durations2);
+      mergedDurations.sort((a, b) => a - b);
+      setPlayDurations(mergedDurations);
     }
-  }, [selectedRunData]);
+  }, [selectedRunData, selectedRunData2]);
+
+  const extractDurations = (timestamps: Date[]) => {
+    let durations: number[] = [];
+    for (let i = 0; i < timestamps.length - 1; i++) {
+      durations.push(timestamps[i + 1].getTime() - timestamps[0].getTime());
+    }
+    return durations;
+  }
 
   let onSelected = (item: string) => {
     setDisplayInfo(new RunDisplayInfo());
@@ -55,32 +70,36 @@ function App() {
   let onPlayUpdate = (index: number, durationMs: number) => {
     console.log("onPlayUpdate", index, durationMs);
     let info = extractRunDisplayInfoTrunctated(selectedRunData, durationMs)
-    console.log(info);
     setDisplayInfo(info);
+    let info2 = extractRunDisplayInfoTrunctated(selectedRunData2, durationMs)
+    setDisplayInfo2(info2);
   }
 
-  const wholeMaze = function (info: RunDisplayInfo, showRobot: boolean) {
+  let wholeMaze = function (info: RunDisplayInfo, showRobot: boolean) {
     return <div className="wholeMaze">
       <div>
-        <MazeCanvas path={displayInfo.path} />
-        <Robot info={displayInfo} show={showRobot} />
-        <Maze discoverStates={displayInfo.discoveryStates}/>
+        <MazeCanvas path={info.path} />
+        <Robot info={info} show={showRobot} />
+        <Maze discoverStates={info.discoveryStates}/>
       </div>
       <div>
-        <SensorDataDisplay sensorData={displayInfo.sensorData} />
+        <SensorDataDisplay sensorData={info.sensorData} />
       </div>
     </div>
   }
 
 
-  return <div className="root" style={{ dataBsTheme: "dark" }}>
+  return <div className="root">
     <h1>EV3 Maze Solver</h1>
     <br />
     <div style={{ display: 'flex', alignItems: "", marginTop: "40px" }}>
-      <PlayManager onUpdate={onPlayUpdate} timestamps={playTimestamps} />
+      { selectedRun !== "Current" && <PlayManager onUpdate={onPlayUpdate} durations={playDurations} /> }
       <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected} defaultValue="Current"/>
-      <div style={{margin: "8px", fontSize: "24px"}}>vs.</div> 
-      <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected2} defaultValue="None" />
+      { selectedRun !== "Current" && <div style={{ display: "flex" }}>
+          <div style={{margin: "8px", fontSize: "24px"}}>vs.</div> 
+          <Dropdown items={allRunData.map(x => x.id)} onSelected={onSelected2} defaultValue="None" /> 
+        </div>
+      }
     </div>
     <div className="mazeSpacer" />
     <div style={{ display: 'flex' }}>
