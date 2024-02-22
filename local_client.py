@@ -123,37 +123,6 @@ def send_command(request, command, mbox):
 
     return data
 
-# ------------------------- Receiving messages from EV3 + send callbacks to CPEE ---------------------------
-def send_callbacks():
-    last_response = None
-    while True:
-        if not isConnected:
-            sleep(3)
-            continue
-
-        response = mbox.read()
-        if response == last_response or response == None:
-            sleep(0.0000001)
-            continue
-
-        last_response = response
-
-        print(ev3_tag, "Received response from EV3: ", response)
-        callback_url = response.split(",")[0]
-        data = response.split(",", 1)[1]
-        if "http" not in callback_url:
-            continue
-
-        print(ev3_tag, "Sending response to callback url: ", callback_url)
-
-        if "'" in data:
-            data = data.replace("'", '"')
-            data = json.loads(data)
-            requests.put(callback_url, json=data)
-            continue
-
-        requests.put(callback_url, data=data)
-
 # ------------------------- Receiving data from CPEE ---------------------------    
 @app.route('/', methods=['POST'])
 def print_post_data():
@@ -205,5 +174,4 @@ def runServer():
 # Run the app
 if __name__ == '__main__':
     threading.Thread(target=runServer).start()
-    # threading.Thread(target=send_callbacks).start()
-    threading.Thread(target=send_heartbeats).start()
+    send_heartbeats()

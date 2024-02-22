@@ -46,7 +46,7 @@ class RunDisplayInfo {
 
     applyRunDataEntry(runDataEntry: any) {
         if ("activity" in runDataEntry) {
-            if ("passthrough" in runDataEntry) {
+            if (!("passthrough" in runDataEntry)) {
                 return;
             }
             let endpoint = runDataEntry["endpoint"];
@@ -59,7 +59,7 @@ class RunDisplayInfo {
             } else if (command === "right") {
                 this.rotation = (this.rotation + 90) % 360;
             } else if (command === "all_measures") {
-                // Ignore for now
+                // Nothing to do here
             }
             this._updateDiscoveryStates();
         } else if ("stream:source" in runDataEntry && runDataEntry["stream:source"] === "robot"){
