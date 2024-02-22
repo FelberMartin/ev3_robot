@@ -95,10 +95,6 @@ def motor():
 @app.route('/all_measures', methods=['POST'])    
 def all_measures():
     return send_command(request, Command.ALL_MEASURES)
-    if type(response) != str:
-        return response
-    response = response.replace("'", '"')   # CPEE requires double quotes
-    return json.loads(response)
 
 def send_command(request, command):
     if not isConnected:
@@ -111,6 +107,7 @@ def send_command(request, command):
     mbox.send(callback_url + "," + command)
     return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})
 
+# ------------------------- Receiving messages from EV3 + send callbacks to CPEE ---------------------------
 def send_callbacks():
     last_response = None
     while True:
@@ -120,7 +117,7 @@ def send_callbacks():
 
         response = mbox.read()
         if response == last_response or response == None:
-            sleep(0.00001)
+            sleep(0.0000001)
             continue
 
         last_response = response
@@ -157,7 +154,7 @@ def currentRun():
     return data_extraction.getCurrentRunData()
 
 
-# Send heartbeats to EV3
+# ------------------------- Sending heartbeats to the EV3 ---------------------------
 def sendHeartbeats():
     global isConnected
     counter = 0
@@ -179,6 +176,8 @@ def sendHeartbeats():
             print(ev3_tag, "Could not send heartbeat")
             connectBluetooth()
 
+
+# ------------------------- Main program ---------------------------
 def runServer():
     data_extraction.initialize()
     app.run(host="localhost", port=8080)

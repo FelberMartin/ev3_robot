@@ -46,7 +46,6 @@ def forward_async(callback_url, angle):
 def forward(angle):
     if angle is None:
         angle = 1465.5
-        # angle = 500
     else:
         angle = int(angle)
 
