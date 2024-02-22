@@ -26,11 +26,11 @@ def _update_data():
     # Initilize the data with all the files in the streams folder
     # Data should be a list of dictionaries, where each dictionary represents a stream
     # Each dictionary should have the following keys: "key" (the file name) and "content" (the file content)
-    for file_name in os.listdir("./streams"):
+    for file_name in os.listdir("./data/streams"):
         if file_name == current_stream_file:
             continue
 
-        with open(f"./streams/{file_name}", 'r') as f:
+        with open(f"./data/streams/{file_name}", 'r') as f:
             content = f.read()
             data.append({"id": file_name, "content": content})
 
@@ -111,7 +111,7 @@ def _append_to_current_data(data):
     data['backendTimestampMs'] = time.time() * 1000
     current_data.append(data)
 
-    with open(f"./streams/{current_stream_file}", 'w') as f:
+    with open(f"./data/streams/{current_stream_file}", 'w') as f:
         f.write(json.dumps(current_data))
 
 def getData():
