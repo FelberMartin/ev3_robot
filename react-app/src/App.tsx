@@ -50,8 +50,8 @@ function App() {
 
   const extractDurations = (timestamps: Date[]) => {
     let durations: number[] = [];
-    for (let i = 0; i < timestamps.length - 1; i++) {
-      durations.push(timestamps[i + 1].getTime() - timestamps[0].getTime());
+    for (let i = 0; i < timestamps.length; i++) {
+      durations.push(timestamps[i].getTime() - timestamps[0].getTime());
     }
     return durations;
   }

@@ -87,6 +87,12 @@ def _handle_data(full_json):
 def _handle_probe_data(full_json):
     datastream = full_json['datastream']
     stream_point = datastream[0]['stream:point']
+
+    if stream_point['stream:id'] == "algo":
+        abreviation = "right" if "right_hand_rule" in stream_point['stream:value'] else "left"
+        global current_stream_file
+        current_stream_file = abreviation + current_stream_file
+        return
     
     print("+++ " + str(stream_point))
     _append_to_current_data(stream_point)

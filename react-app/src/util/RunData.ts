@@ -67,6 +67,7 @@ class RunDisplayInfo {
             if (sensorData != "") {
                 this.sensorData = sensorData;
             }
+            this._updateDiscoveryStates();
         }
     }
 
@@ -90,7 +91,7 @@ class RunDisplayInfo {
         // Tiles
         let [x, y] = getDiscoveryStateIndices(this.position);
         if (x < 0 || x >= gridSegmentCounts || y < 0 || y >= gridSegmentCounts) {
-            console.log("Position out of bounds: ", this.position);
+            // console.log("Position out of bounds: ", this.position);
             return;
         }
 
@@ -116,11 +117,10 @@ function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number
         return new RunDisplayInfo();
     }
     let startString = runData[0]["backendTimestampMs"];
-    let start = new Date(startString);
-    let end = new Date(start);
-    end.setMilliseconds(end.getMilliseconds() + durationMs);
+    let start = Number(startString);
+    let end = start + durationMs+ 10; // Add 10ms for dealing with rounding errors
     let truncatedRunData = runData.filter((data) => {
-        let timestamp = new Date(data["backendTimestampMs"]);
+        let timestamp = data["backendTimestampMs"];
         return timestamp >= start && timestamp <= end;
     });
     return extractRunDisplayInfo(truncatedRunData);
