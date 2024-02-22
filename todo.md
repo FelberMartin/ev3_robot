@@ -1,7 +1,3 @@
 TODO:
-- Toggle between right and left hand rule
+- Problems with naming files with algorithms: check: does this work now?
 - Interpolate robot rotation + position in RunData
-- Update models on lehre server: timeout after finishing right branch + isFinished boolean check in allMeasures
-  - Already done for RHR
-  - Next: check whether changes work
-  - Then: Update LHR and scp both to the server

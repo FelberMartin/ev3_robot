@@ -92,6 +92,7 @@ def _handle_probe_data(full_json):
         abreviation = "right" if "right_hand_rule" in stream_point['stream:value'] else "left"
         global current_stream_file
         current_stream_file = abreviation + current_stream_file
+        print("################################# Changing current stream file to: ", current_stream_file, " algorithm: ", stream_point['stream:value'])
         return
     
     print("+++ " + str(stream_point))
