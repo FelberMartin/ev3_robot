@@ -2,7 +2,7 @@ from my_pybricks.messaging import BluetoothMailboxClient, TextMailbox
 from time import sleep
 from flask import Flask, request, Response
 from pybricks.parameters import Port
-from commands import Command
+from ev3.commands import Command
 from flask_cors import CORS
 
 import requests
@@ -10,7 +10,7 @@ import threading
 import json
 import random
 
-import vis.data_extraction as data_extraction
+import data.data_extraction as data_extraction
 
 isConnected = False
 
