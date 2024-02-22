@@ -62,7 +62,7 @@ class RunDisplayInfo {
                 // Ignore for now
             }
             this._updateDiscoveryStates();
-        } else if ("stream:value" in runDataEntry){
+        } else if ("stream:source" in runDataEntry && runDataEntry["stream:source"] === "robot"){
             let sensorData = runDataEntry["stream:value"];
             if (sensorData != "") {
                 this.sensorData = sensorData;

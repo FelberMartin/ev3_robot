@@ -1,0 +1,1227 @@
+[
+  {
+    "stream:id": "algo",
+    "stream:value": "right_hand_rule",
+    "stream:timestamp": "2024-02-22 14:10:26 +0100",
+    "stream:source": "model",
+    "backendTimestampMs": 1708607426542.3674
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607429204.9895
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607429399.6638
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607429743.001
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": "",
+    "stream:timestamp": "2024-02-22 14:10:29 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607429779.0974
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607429898.9988
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607430276.8376
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 28,
+      "infrared_sensor": 68,
+      "motor_left_angle": 0,
+      "motor_left_speed": 0,
+      "motor_right_angle": 1,
+      "motor_right_speed": 0
+    },
+    "stream:timestamp": "2024-02-22 14:10:29 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607430290.4058
+  },
+  {
+    "activity": "a5",
+    "label": "forward (move into maze)",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "passthrough": null,
+    "backendTimestampMs": 1708607430331.1455
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607430460.2314
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607430792.8752
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 68,
+      "motor_left_angle": 0,
+      "motor_left_speed": 0,
+      "motor_right_angle": 1,
+      "motor_right_speed": 0
+    },
+    "stream:timestamp": "2024-02-22 14:10:30 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607430831.5776
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607430942.8618
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607431272.294
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 67,
+      "motor_left_angle": 0,
+      "motor_left_speed": 0,
+      "motor_right_angle": 1,
+      "motor_right_speed": 0
+    },
+    "stream:timestamp": "2024-02-22 14:10:30 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607431325.2097
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607431440.259
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607431797.236
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 66,
+      "motor_left_angle": 125,
+      "motor_left_speed": 387,
+      "motor_right_angle": 126,
+      "motor_right_speed": 401
+    },
+    "stream:timestamp": "2024-02-22 14:10:31 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607431819.7173
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607431943.917
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607432265.4102
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 61,
+      "motor_left_angle": 323,
+      "motor_left_speed": 392,
+      "motor_right_angle": 324,
+      "motor_right_speed": 406
+    },
+    "stream:timestamp": "2024-02-22 14:10:31 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607432316.905
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607432414.7373
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607432754.341
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 57,
+      "motor_left_angle": 523,
+      "motor_left_speed": 409,
+      "motor_right_angle": 524,
+      "motor_right_speed": 400
+    },
+    "stream:timestamp": "2024-02-22 14:10:32 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607432789.325
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607432904.4485
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607433238.9438
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 52,
+      "motor_left_angle": 713,
+      "motor_left_speed": 394,
+      "motor_right_angle": 714,
+      "motor_right_speed": 397
+    },
+    "stream:timestamp": "2024-02-22 14:10:32 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607433273.9316
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607433393.1042
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607433741.1091
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 47,
+      "motor_left_angle": 911,
+      "motor_left_speed": 398,
+      "motor_right_angle": 912,
+      "motor_right_speed": 403
+    },
+    "stream:timestamp": "2024-02-22 14:10:33 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607433771.7932
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607433889.1326
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607434223.711
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 40,
+      "motor_left_angle": 1107,
+      "motor_left_speed": 400,
+      "motor_right_angle": 1109,
+      "motor_right_speed": 399
+    },
+    "stream:timestamp": "2024-02-22 14:10:33 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607434292.7085
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607434379.6047
+  },
+  {
+    "activity": "a5",
+    "label": "forward (move into maze)",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "backendTimestampMs": 1708607434456.039
+  },
+  {
+    "activity": "a6",
+    "label": "right",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/right",
+    "passthrough": null,
+    "backendTimestampMs": 1708607434517.2546
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607434741.2773
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 23,
+      "infrared_sensor": 35,
+      "motor_left_angle": 1304,
+      "motor_left_speed": 394,
+      "motor_right_angle": 1305,
+      "motor_right_speed": 411
+    },
+    "stream:timestamp": "2024-02-22 14:10:34 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607434748.649
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607434893.9792
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607435220.6045
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 27,
+      "motor_left_angle": 1465,
+      "motor_left_speed": 89,
+      "motor_right_angle": 1465,
+      "motor_right_speed": 85
+    },
+    "stream:timestamp": "2024-02-22 14:10:34 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607435277.7683
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607435359.2788
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607435705.136
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 27,
+      "motor_left_angle": 1498,
+      "motor_left_speed": 304,
+      "motor_right_angle": 1433,
+      "motor_right_speed": -318
+    },
+    "stream:timestamp": "2024-02-22 14:10:35 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607435746.6438
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607435864.2449
+  },
+  {
+    "activity": "a6",
+    "label": "right",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/right",
+    "backendTimestampMs": 1708607436216.063
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 34,
+      "motor_left_angle": 1683,
+      "motor_left_speed": 393,
+      "motor_right_angle": 1247,
+      "motor_right_speed": -396
+    },
+    "stream:timestamp": "2024-02-22 14:10:35 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607436240.2295
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607436282.6785
+  },
+  {
+    "activity": "a3",
+    "label": "left",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/left",
+    "passthrough": null,
+    "backendTimestampMs": 1708607436298.4973
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607436450.083
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607436793.7698
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 30,
+      "infrared_sensor": 24,
+      "motor_left_angle": 1881,
+      "motor_left_speed": 397,
+      "motor_right_angle": 1049,
+      "motor_right_speed": -405
+    },
+    "stream:timestamp": "2024-02-22 14:10:36 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607436834.7717
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607436933.7253
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607437279.652
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 25,
+      "motor_left_angle": 1965,
+      "motor_left_speed": 0,
+      "motor_right_angle": 965,
+      "motor_right_speed": 0
+    },
+    "stream:timestamp": "2024-02-22 14:10:36 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607437326.8232
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607437439.7593
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607437800.1543
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 30,
+      "infrared_sensor": 24,
+      "motor_left_angle": 1839,
+      "motor_left_speed": -398,
+      "motor_right_angle": 1091,
+      "motor_right_speed": 388
+    },
+    "stream:timestamp": "2024-02-22 14:10:37 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607437815.7017
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607437931.7903
+  },
+  {
+    "activity": "a3",
+    "label": "left",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/left",
+    "backendTimestampMs": 1708607438028.2034
+  },
+  {
+    "activity": "a7",
+    "label": "left",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/left",
+    "passthrough": null,
+    "backendTimestampMs": 1708607438081.3726
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607438284.7556
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 33,
+      "motor_left_angle": 1639,
+      "motor_left_speed": -402,
+      "motor_right_angle": 1292,
+      "motor_right_speed": 403
+    },
+    "stream:timestamp": "2024-02-22 14:10:37 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607438296.416
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607438431.1665
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607438777.2134
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 27,
+      "motor_left_angle": 1468,
+      "motor_left_speed": -133,
+      "motor_right_angle": 1463,
+      "motor_right_speed": 150
+    },
+    "stream:timestamp": "2024-02-22 14:10:38 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607438813.8384
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607438922.414
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607439261.622
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 27,
+      "motor_left_angle": 1433,
+      "motor_left_speed": -294,
+      "motor_right_angle": 1498,
+      "motor_right_speed": 298
+    },
+    "stream:timestamp": "2024-02-22 14:10:38 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607439291.96
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607439420.9258
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607439765.4287
+  },
+  {
+    "activity": "a7",
+    "label": "left",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/left",
+    "backendTimestampMs": 1708607439784.0483
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 33,
+      "motor_left_angle": 1236,
+      "motor_left_speed": -405,
+      "motor_right_angle": 1695,
+      "motor_right_speed": 397
+    },
+    "stream:timestamp": "2024-02-22 14:10:39 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607439788.9854
+  },
+  {
+    "activity": "a2",
+    "label": "forward",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "passthrough": null,
+    "backendTimestampMs": 1708607439834.4006
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607439898.1692
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607440231.5015
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 75,
+      "motor_left_angle": 1037,
+      "motor_left_speed": -408,
+      "motor_right_angle": 1894,
+      "motor_right_speed": 405
+    },
+    "stream:timestamp": "2024-02-22 14:10:39 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607440278.8438
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607440391.381
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607440738.0464
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 77,
+      "motor_left_angle": 964,
+      "motor_left_speed": 3,
+      "motor_right_angle": 1967,
+      "motor_right_speed": 3
+    },
+    "stream:timestamp": "2024-02-22 14:10:40 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607440766.3943
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607440883.9514
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607441210.4902
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 76,
+      "motor_left_angle": 1070,
+      "motor_left_speed": 395,
+      "motor_right_angle": 2072,
+      "motor_right_speed": 391
+    },
+    "stream:timestamp": "2024-02-22 14:10:40 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607441259.1333
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607441365.899
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607441716.7607
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 73,
+      "motor_left_angle": 1264,
+      "motor_left_speed": 401,
+      "motor_right_angle": 2266,
+      "motor_right_speed": 398
+    },
+    "stream:timestamp": "2024-02-22 14:10:41 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607441739.463
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607441862.4036
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607442192.4185
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 22,
+      "infrared_sensor": 70,
+      "motor_left_angle": 1463,
+      "motor_left_speed": 400,
+      "motor_right_angle": 2465,
+      "motor_right_speed": 408
+    },
+    "stream:timestamp": "2024-02-22 14:10:41 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607442254.053
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607442375.6768
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607442699.3647
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 67,
+      "motor_left_angle": 1659,
+      "motor_left_speed": 391,
+      "motor_right_angle": 2661,
+      "motor_right_speed": 398
+    },
+    "stream:timestamp": "2024-02-22 14:10:42 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607442736.2795
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607442862.805
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607443191.519
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 65,
+      "motor_left_angle": 1857,
+      "motor_left_speed": 405,
+      "motor_right_angle": 2859,
+      "motor_right_speed": 398
+    },
+    "stream:timestamp": "2024-02-22 14:10:42 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607443239.9338
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607443349.3706
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607443690.3577
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 63,
+      "motor_left_angle": 2056,
+      "motor_left_speed": 403,
+      "motor_right_angle": 3059,
+      "motor_right_speed": 401
+    },
+    "stream:timestamp": "2024-02-22 14:10:43 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607443724.237
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607443830.4932
+  },
+  {
+    "activity": "a2",
+    "label": "forward",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "backendTimestampMs": 1708607443924.0723
+  },
+  {
+    "activity": "a6",
+    "label": "right",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/right",
+    "passthrough": null,
+    "backendTimestampMs": 1708607443975.9817
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607444201.9211
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 29,
+      "infrared_sensor": 61,
+      "motor_left_angle": 2251,
+      "motor_left_speed": 399,
+      "motor_right_angle": 3253,
+      "motor_right_speed": 397
+    },
+    "stream:timestamp": "2024-02-22 14:10:43 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607444218.2026
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607444358.8828
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607444706.313
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 57,
+      "motor_left_angle": 2427,
+      "motor_left_speed": 128,
+      "motor_right_angle": 3428,
+      "motor_right_speed": 146
+    },
+    "stream:timestamp": "2024-02-22 14:10:44 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607444732.0298
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607444840.2966
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607445180.8633
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 58,
+      "motor_left_angle": 2471,
+      "motor_left_speed": 345,
+      "motor_right_angle": 3388,
+      "motor_right_speed": -366
+    },
+    "stream:timestamp": "2024-02-22 14:10:44 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607445229.3574
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607445325.2092
+  },
+  {
+    "activity": "a6",
+    "label": "right",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/right",
+    "backendTimestampMs": 1708607445676.878
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 29,
+      "infrared_sensor": 46,
+      "motor_left_angle": 2665,
+      "motor_left_speed": 400,
+      "motor_right_angle": 3195,
+      "motor_right_speed": -393
+    },
+    "stream:timestamp": "2024-02-22 14:10:45 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607445710.391
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607445719.2712
+  },
+  {
+    "activity": "a2",
+    "label": "forward",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "passthrough": null,
+    "backendTimestampMs": 1708607445754.3196
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607445868.014
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607446208.7598
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 61,
+      "motor_left_angle": 2859,
+      "motor_left_speed": 398,
+      "motor_right_angle": 3002,
+      "motor_right_speed": -399
+    },
+    "stream:timestamp": "2024-02-22 14:10:45 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607446234.3386
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607446351.171
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607446685.9304
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 30,
+      "infrared_sensor": 60,
+      "motor_left_angle": 2930,
+      "motor_left_speed": 0,
+      "motor_right_angle": 2930,
+      "motor_right_speed": 0
+    },
+    "stream:timestamp": "2024-02-22 14:10:46 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607446727.94
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607446844.349
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607447192.368
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 27,
+      "infrared_sensor": 57,
+      "motor_left_angle": 3058,
+      "motor_left_speed": 391,
+      "motor_right_angle": 3058,
+      "motor_right_speed": 392
+    },
+    "stream:timestamp": "2024-02-22 14:10:46 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607447211.856
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607447356.1252
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607447698.606
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 53,
+      "motor_left_angle": 3253,
+      "motor_left_speed": 402,
+      "motor_right_angle": 3253,
+      "motor_right_speed": 397
+    },
+    "stream:timestamp": "2024-02-22 14:10:47 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607447745.9226
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607447857.7703
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607448198.9539
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 24,
+      "infrared_sensor": 48,
+      "motor_left_angle": 3458,
+      "motor_left_speed": 398,
+      "motor_right_angle": 3458,
+      "motor_right_speed": 395
+    },
+    "stream:timestamp": "2024-02-22 14:10:47 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607448225.241
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607448371.7449
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607448694.0679
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 26,
+      "infrared_sensor": 42,
+      "motor_left_angle": 3659,
+      "motor_left_speed": 406,
+      "motor_right_angle": 3659,
+      "motor_right_speed": 404
+    },
+    "stream:timestamp": "2024-02-22 14:10:48 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607448747.9297
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607448839.789
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607449189.0938
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 25,
+      "infrared_sensor": 36,
+      "motor_left_angle": 3863,
+      "motor_left_speed": 395,
+      "motor_right_angle": 3862,
+      "motor_right_speed": 402
+    },
+    "stream:timestamp": "2024-02-22 14:10:48 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607449214.4014
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607449351.3452
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "passthrough": null,
+    "backendTimestampMs": 1708607449673.6042
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 39,
+      "infrared_sensor": 32,
+      "motor_left_angle": 4052,
+      "motor_left_speed": 400,
+      "motor_right_angle": 4052,
+      "motor_right_speed": 391
+    },
+    "stream:timestamp": "2024-02-22 14:10:49 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607449723.1768
+  },
+  {
+    "activity": "a13",
+    "label": "measure data",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/all_measures",
+    "backendTimestampMs": 1708607449880.917
+  },
+  {
+    "activity": "a2",
+    "label": "forward",
+    "endpoint": "https://lehre.bpm.in.tum.de/ports/9901/forward",
+    "backendTimestampMs": 1708607449892.2312
+  },
+  {
+    "stream:id": "sensor_data",
+    "stream:value": {
+      "color_sensor": 41,
+      "infrared_sensor": 26,
+      "motor_left_angle": 4255,
+      "motor_left_speed": 396,
+      "motor_right_angle": 4255,
+      "motor_right_speed": 392
+    },
+    "stream:timestamp": "2024-02-22 14:10:49 +0100",
+    "stream:source": "robot",
+    "backendTimestampMs": 1708607450210.3801
+  }
+]

@@ -6,7 +6,7 @@ import os
 import time
 
 # A list of CPEE instances that are allowed to send data to this server
-instances = {"right_hand_rule", "left_hand_rule", "random_mouse", "test2"}
+instances = {"right_hand_rule", "left_hand_rule", "random_mouse", "test2", "lego_maze_solver_central"}
 
 current_stream_file = None
 

@@ -20,13 +20,14 @@ ev3_tag = "\033[90m" + ev3_tag + "\033[0m "
 
 
 def connectBluetooth():
-    global isConnected, client, mbox
+    global isConnected, client, mbox_move, mbox_messure, mbox_heartbeat
     client = BluetoothMailboxClient()
-    mbox = TextMailbox('talk', client)
+    mbox_move = TextMailbox('move', client)
+    mbox_messure = TextMailbox('measure', client)
+    mbox_heartbeat = TextMailbox('heartbeat', client)
     print(ev3_tag, "connecting to brick ...")
     try:
         client.connect("00:17:EC:ED:1E:3D")
-        mbox.send("ready")
         print(ev3_tag, "\033[92mConnected!\033[0m")
         isConnected = True
     except:
@@ -58,30 +59,30 @@ def get_algorithm():
 
 @app.route('/forward', methods=['POST'])
 def forward():
-    return send_command(request, Command.FORWARD)
+    return send_command(request, Command.FORWARD, mbox_move)
 
 @app.route('/turn', methods=['POST'])
 def turn():
     direction = request.form['direction']
     print(ev3_tag, "Turning ", direction)
     assert(direction == "left" or direction == "right")
-    return send_command(request, Command.TURN_LEFT if direction == "left" else Command.TURN_RIGHT)
+    return send_command(request, Command.TURN_LEFT if direction == "left" else Command.TURN_RIGHT, mbox_move)
 
 @app.route('/left', methods=['POST'])
 def left():
-    return send_command(request, Command.TURN_LEFT)
+    return send_command(request, Command.TURN_LEFT, mbox_move)
 
 @app.route('/right', methods=['POST'])
 def right():
-    return send_command(request, Command.TURN_RIGHT)
+    return send_command(request, Command.TURN_RIGHT, mbox_move)
 
 @app.route('/infrared', methods=['POST'])
 def infrared():
-    return send_command(request, Command.INFRARED_SENSOR)
+    return send_command(request, Command.INFRARED_SENSOR, mbox_messure)
 
 @app.route('/color', methods=['POST'])
 def color():
-    return send_command(request, Command.COLOR_SENSOR)
+    return send_command(request, Command.COLOR_SENSOR, mbox_messure)
 
 @app.route('/motor', methods=['POST'])
 def motor():
@@ -90,13 +91,13 @@ def motor():
     measure = request.form['measure']
     assert(measure == "speed" or measure == "angle")
     
-    return send_command(request, "motor_" + side + "_" + measure)
+    return send_command(request, "motor_" + side + "_" + measure, mbox_messure)
 
 @app.route('/all_measures', methods=['POST'])    
 def all_measures():
-    return send_command(request, Command.ALL_MEASURES)
+    return send_command(request, Command.ALL_MEASURES, mbox_messure)
 
-def send_command(request, command):
+def send_command(request, command, mbox):
     if not isConnected:
         return Response("EV3 not connected", status=503)
     
@@ -105,7 +106,22 @@ def send_command(request, command):
         callback_url = request.headers["CPEE_CALLBACK"]
 
     mbox.send(callback_url + "," + command)
-    return Response(status=200, headers={'content-type': 'application/json', 'CPEE-UPDATE': 'true'})
+    response = mbox.wait_new()
+
+    print(ev3_tag, "Received response from EV3: ", response)
+    callback_url = response.split(",")[0]
+    data = response.split(",", 1)[1]
+    if "http" not in callback_url:
+        return "OK"
+
+    print(ev3_tag, "Sending response: ", callback_url)
+
+    if "'" in data:
+        data = data.replace("'", '"')
+        data = json.loads(data)
+        return data
+
+    return data
 
 # ------------------------- Receiving messages from EV3 + send callbacks to CPEE ---------------------------
 def send_callbacks():
@@ -155,7 +171,7 @@ def currentRun():
 
 
 # ------------------------- Sending heartbeats to the EV3 ---------------------------
-def sendHeartbeats():
+def send_heartbeats():
     global isConnected
     counter = 0
     while True:
@@ -168,8 +184,12 @@ def sendHeartbeats():
         try:
             callback_url = "heartbeatcallback_" + str(counter)
             counter += 1
-            mbox.send(callback_url + "," + Command.HEARTBEAT)
+            mbox_heartbeat.send(callback_url + "," + Command.HEARTBEAT)
             print(ev3_tag, "Sent heartbeat")
+
+            mbox_heartbeat.wait()
+            print(ev3_tag, "Received heartbeat response")
+
         except Exception as e:
             print(ev3_tag, "\033[91m" + str(e) + "\033[0m")
             isConnected = False
@@ -185,5 +205,5 @@ def runServer():
 # Run the app
 if __name__ == '__main__':
     threading.Thread(target=runServer).start()
-    threading.Thread(target=send_callbacks).start()
-    threading.Thread(target=sendHeartbeats).start()
+    # threading.Thread(target=send_callbacks).start()
+    threading.Thread(target=send_heartbeats).start()
