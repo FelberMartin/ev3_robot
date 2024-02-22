@@ -89,22 +89,27 @@ def _handle_probe_data(full_json):
     stream_point = datastream[0]['stream:point']
     
     print("+++ " + str(stream_point))
-    _store_stream_point(stream_point)
+    _append_to_current_data(stream_point)
 
 
 def _handle_activity_data(full_json):
     content = full_json['content']
-    _store_stream_point(content)
+    if "timeout" in content['endpoint']:
+        return
+    
+    relevant_keys = ["activity", "label", "endpoint", "passthrough"]
+    content = {k: content[k] for k in relevant_keys if k in content}
+    _append_to_current_data(content)
     
     
 
-def _store_stream_point(stream_point):
+def _append_to_current_data(data):
     if current_stream_file is None:
         print("*** Error: No stream file is currently open")
         return
     
-    stream_point['backendTimestampMs'] = time.time() * 1000
-    current_data.append(stream_point)
+    data['backendTimestampMs'] = time.time() * 1000
+    current_data.append(data)
 
     with open(f"./vis/streams/{current_stream_file}", 'w') as f:
         f.write(json.dumps(current_data))

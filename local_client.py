@@ -10,7 +10,7 @@ import threading
 import json
 import random
 
-import vis.visualization as visualization
+import vis.data_extraction as data_extraction
 
 isConnected = False
 
@@ -131,29 +131,30 @@ def send_callbacks():
         if "http" not in callback_url:
             continue
 
+        print(ev3_tag, "Sending response to callback url: ", callback_url)
+
         if "'" in data:
             data = data.replace("'", '"')
             data = json.loads(data)
             requests.put(callback_url, json=data)
             continue
 
-        print(ev3_tag, "Sending response to callback url: ", callback_url)
         requests.put(callback_url, data=data)
 
 # ------------------------- Receiving data from CPEE ---------------------------    
 @app.route('/', methods=['POST'])
 def print_post_data():
-    return visualization.handle_post_request(request)
+    return data_extraction.handle_post_request(request)
 
 
 # ------------------------- Sending data to Frontend ---------------------------
 @app.route('/allRunData', methods=['GET'])
 def data():
-    return visualization.getData()
+    return data_extraction.getData()
 
 @app.route('/currentRunData', methods=['GET'])
 def currentRun():
-    return visualization.getCurrentRunData()
+    return data_extraction.getCurrentRunData()
 
 
 # Send heartbeats to EV3
@@ -179,7 +180,7 @@ def sendHeartbeats():
             connectBluetooth()
 
 def runServer():
-    visualization.initialize()
+    data_extraction.initialize()
     app.run(host="localhost", port=8080)
 
 # Run the app

@@ -45,21 +45,28 @@ class RunDisplayInfo {
     }
 
     applyRunDataEntry(runDataEntry: any) {
-        let source = runDataEntry["stream:source"]
-        if (source === "model") {
-            let command = runDataEntry["stream:value"];
-            // command can be "forward", "left", "right"
+        if ("activity" in runDataEntry) {
+            if ("passthrough" in runDataEntry) {
+                return;
+            }
+            let endpoint = runDataEntry["endpoint"];
+            let command = endpoint.split("/").pop();
+            // command can be "forward", "left", "right", "all_measures"
             if (command === "forward") {
                 this._moveForward();
             } else if (command === "left") {
                 this.rotation = (this.rotation + 270) % 360;
             } else if (command === "right") {
                 this.rotation = (this.rotation + 90) % 360;
+            } else if (command === "all_measures") {
+                // Ignore for now
             }
             this._updateDiscoveryStates();
-        } else if (source === "robot") {
+        } else if ("stream:value" in runDataEntry){
             let sensorData = runDataEntry["stream:value"];
-            this.sensorData = sensorData;
+            if (sensorData != "") {
+                this.sensorData = sensorData;
+            }
         }
     }
 
@@ -82,6 +89,11 @@ class RunDisplayInfo {
     _updateDiscoveryStates() {
         // Tiles
         let [x, y] = getDiscoveryStateIndices(this.position);
+        if (x < 0 || x >= gridSegmentCounts || y < 0 || y >= gridSegmentCounts) {
+            console.log("Position out of bounds: ", this.position);
+            return;
+        }
+
         this.discoveryStates[x][y] = DiscoveryState.path;
         if (this.sensorData.color_sensor >= 40) {
             this.discoveryStates[x][y] = DiscoveryState.target;
