@@ -123,7 +123,3 @@ def getCurrentRunData():
         return []
 
     return current_data
-
-
-
-# TODO: The subprocesses on CPEE currently do not work correctly.
