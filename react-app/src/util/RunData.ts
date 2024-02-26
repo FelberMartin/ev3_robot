@@ -1,7 +1,5 @@
-import exp from "constants";
 import { DiscoveryState } from "../components/Maze";
 import { getDiscoveryStateIndices, getDistanceToWall, getWallNextWallIndices, gridSegmentCounts } from "./positions";
-import { get } from "http";
 import { animateValue } from "./Animation";
 
 // Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
@@ -26,14 +24,27 @@ class SensorData {
 export type { SensorData };
 
 class RunDisplayInfo {
+    /** Position of the robot in the grid. Can be non-integral. Note: this is different from the 
+        discoveryState indices. */
     position: [number, number];
+
+    /** Rotation of the robot in degrees. Not clamped to [0, 360). The robot starts with 180 degrees, 
+        facing down in the visualization. */
     rotation: number;
+
+    /** Path the robot has taken so far. In grid-coordinates. */
     path: [number, number][];
+
+    /** The discovery states of the tiles in the grid. */
     discoveryStates: DiscoveryState[][];
+
+    /** The current sensor data of the robot. */
     sensorData: SensorData;
 
+    /** Timestamp of the latest update that was applied to this info. */
     lastUpdate: number;
 
+    /** Callback for when the display info is updated and should be rerendered. */
     onUpdate?: (info: RunDisplayInfo) => void;
 
     constructor() {
@@ -47,7 +58,7 @@ class RunDisplayInfo {
                 this.discoveryStates[i][j] = DiscoveryState.hidden;
             }
         }
-        this.discoveryStates[1][0] = DiscoveryState.no_wall;
+        this.discoveryStates[1][0] = DiscoveryState.no_wall;    // Entry point
         this.sensorData = {
             color_sensor: 20,
             infrared_sensor: 50,
@@ -121,16 +132,19 @@ class RunDisplayInfo {
         }, 1600);
     }
 
+    /** Gets a vector indcating in which the robot is currently facing. If the robot is currently
+     * no facing in a cardinal direction, returns the closest cardinal direction.
+     */
     _getDirectionVector(): [number, number] {
         let rotation = this.rotation % 360;
         if (rotation >= 315 || rotation < 45) {
-            return [0, -1];
+            return [0, -1]; // Up
         } else if (rotation >= 45 && rotation < 135) {
-            return [1, 0];
+            return [1, 0];  // Right
         } else if (rotation >= 135 && rotation < 225) {
-            return [0, 1];
+            return [0, 1];  // Down
         } else if (rotation >= 225 && rotation < 315) {
-            return [-1, 0];
+            return [-1, 0]; // Left
         }
     }
 
@@ -159,7 +173,7 @@ class RunDisplayInfo {
         let direction = this._getDirectionVector();
         let nextWallIndices = getWallNextWallIndices(dsIndices, direction);
         let distanceToWall = getDistanceToWall(this.position, nextWallIndices);
-        if (distanceToWall > 0.2 && distanceToWall < 0.8) {
+        if (distanceToWall > 0.1 && distanceToWall < 0.8) { // Don't update if the potential wall is too far away or too close 
             if (this.sensorData.infrared_sensor < 40) {
                 this._setDiscoveryState(nextWallIndices, DiscoveryState.wall);
             } else {
@@ -174,6 +188,11 @@ class RunDisplayInfo {
 
 }
 
+/**
+ * Applies new run data to the given run display info. The new run data is filtered to only include
+ * data that was not yet applied to the info. The lastUpdate field of the info is used to determine
+ * which data is new.
+ */
 function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: number) : RunDisplayInfo {
     if (runData.length === 0) {
         console.log("Trying to extract run display info from empty run data")
@@ -192,31 +211,6 @@ function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: 
     info.lastUpdate = end;
     return info;
 }
-
-function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number) : RunDisplayInfo {
-    if (runData.length === 0) {
-        console.log("Trying to extract run display info from empty run data")
-        return new RunDisplayInfo();
-    }
-    let startString = runData[0]["backendTimestampMs"];
-    let start = Number(startString);
-    let end = start + durationMs+ 10; // Add 10ms for dealing with rounding errors
-    let truncatedRunData = runData.filter((data) => {
-        let timestamp = data["backendTimestampMs"];
-        return timestamp >= start && timestamp <= end;
-    });
-    return extractRunDisplayInfo(truncatedRunData);
-}
-
-function extractRunDisplayInfo(runData: Array<any>) : RunDisplayInfo {
-    let info = new RunDisplayInfo();
-    for (let i = 0; i < runData.length; i++) {
-        info.applyRunDataEntry(runData[i]);
-    }
-    return info;
-}
-
-
 
 async function getCurrentRunData() : Promise<any[] | null> {
     try {
@@ -250,4 +244,4 @@ async function getAllRunData() : Promise<(any[] | null)[]> {
     return [];
 }
 
-export { RunDisplayInfo, applyNewRunData, extractRunDisplayInfo, extractRunDisplayInfoTrunctated, getCurrentRunData, getAllRunData };
+export { RunDisplayInfo, applyNewRunData, getCurrentRunData, getAllRunData };

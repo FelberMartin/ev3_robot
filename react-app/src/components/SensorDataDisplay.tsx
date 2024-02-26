@@ -88,7 +88,7 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   };
 
   return (
-    <div style={{ marginLeft: "-60px"}}>
+    <div style={{ marginLeft: "-40px"}}>
       <h5>Motors</h5>
       <div style={{ display: 'flex' }}>
         {renderMotorSpeed(animatedMotorLeftSpeed)}
