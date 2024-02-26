@@ -4,7 +4,7 @@ import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
 import { useEffect, useRef, useState } from "react";
-import { RunDisplayInfo, extractRunDisplayInfoTrunctated, getAllRunData, getCurrentRunData } from "./util/RunData";
+import { RunDisplayInfo, applyNewRunData, extractRunDisplayInfoTrunctated, getAllRunData, getCurrentRunData } from "./util/RunData";
 import PlayManager from "./components/PlayManager";
 import SensorDataDisplay from "./components/SensorDataDisplay";
 
@@ -60,6 +60,7 @@ function App() {
     setDisplayInfo(new RunDisplayInfo());
     setSelectedRun(item);
     if (item === "Current") {
+      setSelectedRun2("None");
       return;
     }
     let stringContent = allRunData.filter(x => x.id === item)[0].content;
@@ -105,11 +106,27 @@ function App() {
     setSelectedRunData2(parsedContent);
   }
 
+  useEffect(() => {
+    displayInfo.onUpdate = onInfoUpdate;
+  }, [displayInfo]);
+
+  let onInfoUpdate = (info: RunDisplayInfo) => {
+    setDisplayInfo(info.copy());
+  }
+
+  useEffect(() => {
+    displayInfo2.onUpdate = onInfo2Update;
+  }, [displayInfo2]);
+  
+  let onInfo2Update = (info: RunDisplayInfo) => {
+    setDisplayInfo2(info.copy());
+  }
+
   let onPlayUpdate = (index: number, durationMs: number) => {
     console.log("onPlayUpdate", index, durationMs);
-    let info = extractRunDisplayInfoTrunctated(selectedRunData, durationMs);
+    let info = applyNewRunData(displayInfo, selectedRunData, durationMs);
     setDisplayInfo(info);
-    let info2 = extractRunDisplayInfoTrunctated(selectedRunData2, durationMs);
+    let info2 = applyNewRunData(displayInfo2, selectedRunData2, durationMs);
     setDisplayInfo2(info2);
   }
 
@@ -117,7 +134,7 @@ function App() {
     return <div className="wholeMaze">
       <div>
         <MazeCanvas path={info.path} />
-        <Robot info={info} show={showRobot} />
+        <Robot position={info.position} rotation={info.rotation} show={showRobot} />
         <Maze discoverStates={info.discoveryStates}/>
       </div>
       <div>

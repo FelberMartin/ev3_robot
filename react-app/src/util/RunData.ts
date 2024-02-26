@@ -2,6 +2,7 @@ import exp from "constants";
 import { DiscoveryState } from "../components/Maze";
 import { getDiscoveryStateIndices, getWallIndices, gridSegmentCounts } from "./positions";
 import { get } from "http";
+import { animateValue } from "./Animation";
 
 // Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
 interface SensorData {
@@ -21,6 +22,10 @@ class RunDisplayInfo {
     path: [number, number][];
     discoveryStates: DiscoveryState[][];
     sensorData: SensorData;
+
+    lastUpdate: number;
+
+    onUpdate?: (info: RunDisplayInfo) => void;
 
     constructor() {
         this.position = [0, -1];
@@ -42,6 +47,26 @@ class RunDisplayInfo {
             motor_right_angle: 0,
             motor_right_speed: 0
         };
+        this.lastUpdate = -1;
+    }
+
+    copy(): RunDisplayInfo {
+        let copy = new RunDisplayInfo();
+        copy.position = [this.position[0], this.position[1]];
+        copy.rotation = this.rotation;
+        copy.path = this.path.map((x) => [x[0], x[1]]);
+        copy.discoveryStates = this.discoveryStates.map((x) => x.map((y) => y));
+        copy.sensorData = {
+            color_sensor: this.sensorData.color_sensor,
+            infrared_sensor: this.sensorData.infrared_sensor,
+            motor_left_angle: this.sensorData.motor_left_angle,
+            motor_left_speed: this.sensorData.motor_left_speed,
+            motor_right_angle: this.sensorData.motor_right_angle,
+            motor_right_speed: this.sensorData.motor_right_speed
+        };
+        copy.lastUpdate = this.lastUpdate;
+        copy.onUpdate = this.onUpdate;
+        return copy;
     }
 
     applyRunDataEntry(runDataEntry: any) {
@@ -69,6 +94,7 @@ class RunDisplayInfo {
             }
             this._updateDiscoveryStates();
         }
+        this.onUpdate?.call(this, this);
     }
 
     _moveForward() {
@@ -83,8 +109,18 @@ class RunDisplayInfo {
         } else if (this.rotation === 270) {
             x--;
         }
-        this.position = [x, y];
-        this.path.push([x, y]);
+
+        this.path.push([this.position[0], this.position[1]]);
+        animateValue(this.position[0], x, (value) => {
+            this.position[0] = value;
+            this.path[this.path.length - 1][0] = value;
+            this.onUpdate?.call(this, this);
+        });
+        animateValue(this.position[1], y, (value) => {
+            this.position[1] = value;
+            this.path[this.path.length - 1][1] = value;
+            this.onUpdate?.call(this, this);
+        });
     }
 
     _updateDiscoveryStates() {
@@ -95,20 +131,40 @@ class RunDisplayInfo {
             return;
         }
 
+        [x, y] = [Math.round(x), Math.round(y)];
         this.discoveryStates[x][y] = DiscoveryState.path;
         if (this.sensorData.color_sensor >= 40) {
             this.discoveryStates[x][y] = DiscoveryState.target;
         }
 
         // Walls
-        let [xWall, yWall] = getWallIndices(this.position, this.rotation);
-        if (this.sensorData.infrared_sensor <= 40) {
-            this.discoveryStates[xWall][yWall] = DiscoveryState.wall;
-        } else {
-            this.discoveryStates[xWall][yWall] = DiscoveryState.no_wall;
-        }
+        // let [xWall, yWall] = getWallIndices(this.position, this.rotation);
+        // if (this.sensorData.infrared_sensor <= 40) {
+        //     this.discoveryStates[xWall][yWall] = DiscoveryState.wall;
+        // } else {
+        //     this.discoveryStates[xWall][yWall] = DiscoveryState.no_wall;
+        // }
     }
 
+}
+
+function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: number) : RunDisplayInfo {
+    if (runData.length === 0) {
+        console.log("Trying to extract run display info from empty run data")
+        return info;
+    }
+    let startString = runData[0]["backendTimestampMs"];
+    let start = Number(startString);
+    let end = start + durationMs+ 10; // Add 10ms for dealing with rounding errors
+    let truncatedRunData = runData.filter((data) => {
+        let timestamp = data["backendTimestampMs"];
+        return timestamp > info.lastUpdate && timestamp <= end;
+    });
+    for (let i = 0; i < truncatedRunData.length; i++) {
+        info.applyRunDataEntry(truncatedRunData[i]);
+    }
+    info.lastUpdate = end;
+    return info;
 }
 
 function extractRunDisplayInfoTrunctated(runData: Array<any>, durationMs: number) : RunDisplayInfo {
@@ -168,4 +224,4 @@ async function getAllRunData() : Promise<(any[] | null)[]> {
     return [];
 }
 
-export { RunDisplayInfo, extractRunDisplayInfo, extractRunDisplayInfoTrunctated, getCurrentRunData, getAllRunData };
+export { RunDisplayInfo, applyNewRunData, extractRunDisplayInfo, extractRunDisplayInfoTrunctated, getCurrentRunData, getAllRunData };
