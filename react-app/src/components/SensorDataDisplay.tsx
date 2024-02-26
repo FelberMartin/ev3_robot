@@ -14,17 +14,20 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   const [animatedColorSensor, setAnimatedColorSensor] = useState(sensorData.color_sensor);
   const [animatedInfraredSensor, setAnimatedInfraredSensor] = useState(sensorData.infrared_sensor);
 
-  // Use useEffect to trigger animation when sensorData changes
-  useEffect(() => {
-    animateValue(animatedMotorLeftSpeed, sensorData.motor_left_speed, setAnimatedMotorLeftSpeed);
-    animateValue(animatedMotorRightSpeed, sensorData.motor_right_speed, setAnimatedMotorRightSpeed);
-    animateValue(animatedColorSensor, sensorData.color_sensor, setAnimatedColorSensor);
-    var infraredTarget = sensorData.infrared_sensor;
-    if (infraredTarget > 99) {
-      infraredTarget = 99;
-    }
-    animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
-  }, [sensorData]);
+  // console.log("SensorDataDisplay", sensorData)
+
+  // // Use useEffect to trigger animation when sensorData changes
+  // useEffect(() => {
+  //   // console.log("useEffect triggered", sensorData)
+  //   animateValue(animatedMotorLeftSpeed, sensorData.motor_left_speed, setAnimatedMotorLeftSpeed);
+  //   animateValue(animatedMotorRightSpeed, sensorData.motor_right_speed, setAnimatedMotorRightSpeed);
+  //   animateValue(animatedColorSensor, sensorData.color_sensor, setAnimatedColorSensor);
+  //   var infraredTarget = sensorData.infrared_sensor;
+  //   if (infraredTarget > 99) {
+  //     infraredTarget = 99;
+  //   }
+  //   animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
+  // }, [sensorData]);
 
 
   const renderMotorSpeed = (speed: number) => {
@@ -88,18 +91,31 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
   };
 
   return (
+    // <div style={{ marginLeft: "-60px"}}>
+    //   <h5>Motors</h5>
+    //   <div style={{ display: 'flex' }}>
+    //     {renderMotorSpeed(animatedMotorLeftSpeed)}
+    //     {renderMotorSpeed(animatedMotorRightSpeed)}
+    //   </div>
+    //   <br />
+    //   <h5>Color <br/>Sensor: {Math.round(animatedColorSensor)}</h5>
+    //   {renderColorSensorData(animatedColorSensor)}
+    //   <br />
+    //   <h5>Infrared <br/>Sensor: {Math.round(animatedInfraredSensor)}</h5>
+    //   {renderInfraredSensorData(animatedInfraredSensor)}
+    // </div>
     <div style={{ marginLeft: "-60px"}}>
       <h5>Motors</h5>
       <div style={{ display: 'flex' }}>
-        {renderMotorSpeed(animatedMotorLeftSpeed)}
-        {renderMotorSpeed(animatedMotorRightSpeed)}
+        {renderMotorSpeed(sensorData.motor_left_speed)}
+        {renderMotorSpeed(sensorData.motor_right_speed)}
       </div>
       <br />
-      <h5>Color <br/>Sensor: {Math.round(animatedColorSensor)}</h5>
-      {renderColorSensorData(animatedColorSensor)}
+      <h5>Color <br/>Sensor: {Math.round(sensorData.color_sensor)}</h5>
+      {renderColorSensorData(sensorData.color_sensor)}
       <br />
-      <h5>Infrared <br/>Sensor: {Math.round(animatedInfraredSensor)}</h5>
-      {renderInfraredSensorData(animatedInfraredSensor)}
+      <h5>Infrared <br/>Sensor: {Math.round(sensorData.infrared_sensor)}</h5>
+      {renderInfraredSensorData(sensorData.infrared_sensor)}
     </div>
   );
 };

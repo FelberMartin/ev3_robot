@@ -5,13 +5,22 @@ import { get } from "http";
 import { animateValue } from "./Animation";
 
 // Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
-interface SensorData {
+class SensorData {
     color_sensor: number;
     infrared_sensor: number;
     motor_left_angle: number;
     motor_left_speed: number;
     motor_right_angle: number;
     motor_right_speed: number;
+
+    constructor() {
+        this.color_sensor = 0;
+        this.infrared_sensor = 0;
+        this.motor_left_angle = 0;
+        this.motor_left_speed = 0;
+        this.motor_right_angle = 0;
+        this.motor_right_speed = 0;
+    }
 }
 
 export type { SensorData };
@@ -55,15 +64,8 @@ class RunDisplayInfo {
         copy.position = [this.position[0], this.position[1]];
         copy.rotation = this.rotation;
         copy.path = this.path.map((x) => [x[0], x[1]]);
-        copy.discoveryStates = this.discoveryStates.map((x) => x.map((y) => y));
-        copy.sensorData = {
-            color_sensor: this.sensorData.color_sensor,
-            infrared_sensor: this.sensorData.infrared_sensor,
-            motor_left_angle: this.sensorData.motor_left_angle,
-            motor_left_speed: this.sensorData.motor_left_speed,
-            motor_right_angle: this.sensorData.motor_right_angle,
-            motor_right_speed: this.sensorData.motor_right_speed
-        };
+        copy.discoveryStates = this.discoveryStates;
+        copy.sensorData = this.sensorData;
         copy.lastUpdate = this.lastUpdate;
         copy.onUpdate = this.onUpdate;
         return copy;
@@ -90,7 +92,12 @@ class RunDisplayInfo {
         } else if ("stream:source" in runDataEntry && runDataEntry["stream:source"] === "robot"){
             let sensorData = runDataEntry["stream:value"];
             if (sensorData != "") {
-                this.sensorData = sensorData;
+                this.sensorData.color_sensor = sensorData["color_sensor"];
+                this.sensorData.infrared_sensor = sensorData["infrared_sensor"];
+                this.sensorData.motor_left_angle = sensorData["motor_left_angle"];
+                this.sensorData.motor_left_speed = sensorData["motor_left_speed"];
+                this.sensorData.motor_right_angle = sensorData["motor_right_angle"];
+                this.sensorData.motor_right_speed = sensorData["motor_right_speed"];
             }
             this._updateDiscoveryStates();
         }
@@ -106,7 +113,6 @@ class RunDisplayInfo {
         animateValue(this.position[0], x, (value) => {
             this.position[0] = value;
             this.path[this.path.length - 1][0] = value;
-            this._updateDiscoveryStates();
             this.onUpdate?.call(this, this);
         }, 1600);
         animateValue(this.position[1], y, (value) => {
@@ -132,7 +138,6 @@ class RunDisplayInfo {
     _rotate(degree: number) {
         animateValue(this.rotation, this.rotation + degree, (value) => {
             this.rotation = value;
-            this._updateDiscoveryStates();
             this.onUpdate?.call(this, this);
         }, 1000);
     }
@@ -155,7 +160,6 @@ class RunDisplayInfo {
         let direction = this._getDirectionVector();
         let nextWallIndices = getWallNextWallIndices(dsIndices, direction);
         let distanceToWall = getDistanceToWall(this.position, nextWallIndices);
-        console.log(distanceToWall, this.sensorData.infrared_sensor);
         if (distanceToWall > 0.2 && distanceToWall < 0.8) {
             if (this.sensorData.infrared_sensor < 40) {
                 this._setDiscoveryState(nextWallIndices, DiscoveryState.wall);

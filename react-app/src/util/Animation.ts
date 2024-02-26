@@ -1,5 +1,12 @@
 // Function to smoothly update the animated values
-const animateValue = (currentValue, targetValue, setterFunction, durationMs = 400) => {
+const animateValue = (currentValue: number, targetValue: number, setterFunction, durationMs = 200) => {
+  if (targetValue === currentValue) {
+    return;
+  }
+  if (durationMs === 0) {
+    setterFunction(targetValue);
+    return;
+  }
 
   var start = Date.now();
 

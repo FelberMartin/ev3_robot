@@ -110,7 +110,8 @@ function App() {
   }, [displayInfo]);
 
   let onInfoUpdate = (info: RunDisplayInfo) => {
-    setDisplayInfo(info.copy());
+    const updatedDisplayInfo = info.copy();
+    setDisplayInfo(updatedDisplayInfo);
   }
 
   useEffect(() => {
