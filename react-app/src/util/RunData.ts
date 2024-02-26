@@ -25,8 +25,6 @@ class SensorData {
 
 export type { SensorData };
 
-var counter = 0;
-
 class RunDisplayInfo {
     position: [number, number];
     rotation: number;
@@ -37,7 +35,6 @@ class RunDisplayInfo {
     lastUpdate: number;
 
     onUpdate?: (info: RunDisplayInfo) => void;
-    n: number = 0;
 
     constructor() {
         this.position = [0, -1];
@@ -60,7 +57,6 @@ class RunDisplayInfo {
             motor_right_speed: 0
         };
         this.lastUpdate = -1;
-        // this.n = counter++;
     }
 
     copy(): RunDisplayInfo {
@@ -72,7 +68,6 @@ class RunDisplayInfo {
         copy.sensorData = this.sensorData;
         copy.lastUpdate = this.lastUpdate;
         copy.onUpdate = this.onUpdate;
-        copy.n = this.n;
         return copy;
     }
 
@@ -96,7 +91,6 @@ class RunDisplayInfo {
         } else if ("stream:source" in runDataEntry && runDataEntry["stream:source"] === "robot"){
             let sensorData = runDataEntry["stream:value"];
             if (sensorData != "") {
-                console.log("sensorData update", sensorData);
                 this.sensorData.color_sensor = sensorData["color_sensor"];
                 this.sensorData.infrared_sensor = sensorData["infrared_sensor"];
                 this.sensorData.motor_left_angle = sensorData["motor_left_angle"];
@@ -104,7 +98,6 @@ class RunDisplayInfo {
                 this.sensorData.motor_right_angle = sensorData["motor_right_angle"];
                 this.sensorData.motor_right_speed = sensorData["motor_right_speed"];
             }
-            this.n++;
             this._updateDiscoveryStates();
         }
         this.onUpdate?.call(this, this);

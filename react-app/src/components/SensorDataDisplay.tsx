@@ -5,10 +5,9 @@ import { animateValue } from '../util/Animation';
 
 interface Props {
   sensorData: SensorData;
-  n: number;
 }
 
-const SensorDataDisplay = ({ sensorData, n } : Props) => {
+const SensorDataDisplay = ({ sensorData } : Props) => {
   // State variables to track the animated values
   const [animatedMotorLeftSpeed, setAnimatedMotorLeftSpeed] = useState(sensorData.motor_left_speed);
   const [animatedMotorRightSpeed, setAnimatedMotorRightSpeed] = useState(sensorData.motor_right_speed);
@@ -28,7 +27,7 @@ const SensorDataDisplay = ({ sensorData, n } : Props) => {
       infraredTarget = 99;
     }
     animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
-  }, [sensorData, n]);
+  }, [sensorData]);
 
 
   const renderMotorSpeed = (speed: number) => {

@@ -107,13 +107,10 @@ function App() {
 
   useEffect(() => {
     displayInfo.onUpdate = onInfoUpdate;
-    console.log("displayInfo.onUpdate", displayInfo.n);
   }, [displayInfo]);
 
   let onInfoUpdate = (info: RunDisplayInfo) => {
     const updatedDisplayInfo = info.copy();
-    updatedDisplayInfo.n++;
-    console.log("onInfoUpdate", displayInfo.n, updatedDisplayInfo.n);
     setDisplayInfo(updatedDisplayInfo);
   }
 
@@ -138,7 +135,7 @@ function App() {
         <Maze discoverStates={info.discoveryStates}/>
       </div>
       <div>
-        <SensorDataDisplay sensorData={info.sensorData} n={info.n} />
+        <SensorDataDisplay sensorData={info.sensorData}/>
       </div>
     </div>
   }
