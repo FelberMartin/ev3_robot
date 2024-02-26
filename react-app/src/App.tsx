@@ -107,10 +107,13 @@ function App() {
 
   useEffect(() => {
     displayInfo.onUpdate = onInfoUpdate;
+    console.log("displayInfo.onUpdate", displayInfo.n);
   }, [displayInfo]);
 
   let onInfoUpdate = (info: RunDisplayInfo) => {
     const updatedDisplayInfo = info.copy();
+    updatedDisplayInfo.n++;
+    console.log("onInfoUpdate", displayInfo.n, updatedDisplayInfo.n);
     setDisplayInfo(updatedDisplayInfo);
   }
 
@@ -123,10 +126,8 @@ function App() {
   }
 
   let onPlayUpdate = (index: number, durationMs: number) => {
-    let info = applyNewRunData(displayInfo, selectedRunData, durationMs);
-    setDisplayInfo(info);
-    let info2 = applyNewRunData(displayInfo2, selectedRunData2, durationMs);
-    setDisplayInfo2(info2);
+    applyNewRunData(displayInfo, selectedRunData, durationMs);
+    applyNewRunData(displayInfo2, selectedRunData2, durationMs);
   }
 
   let wholeMaze = function (info: RunDisplayInfo, showRobot: boolean) {
@@ -137,7 +138,7 @@ function App() {
         <Maze discoverStates={info.discoveryStates}/>
       </div>
       <div>
-        <SensorDataDisplay sensorData={info.sensorData} />
+        <SensorDataDisplay sensorData={info.sensorData} n={info.n} />
       </div>
     </div>
   }

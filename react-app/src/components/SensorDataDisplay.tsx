@@ -5,9 +5,10 @@ import { animateValue } from '../util/Animation';
 
 interface Props {
   sensorData: SensorData;
+  n: number;
 }
 
-const SensorDataDisplay = ({ sensorData } : Props) => {
+const SensorDataDisplay = ({ sensorData, n } : Props) => {
   // State variables to track the animated values
   const [animatedMotorLeftSpeed, setAnimatedMotorLeftSpeed] = useState(sensorData.motor_left_speed);
   const [animatedMotorRightSpeed, setAnimatedMotorRightSpeed] = useState(sensorData.motor_right_speed);
@@ -16,18 +17,18 @@ const SensorDataDisplay = ({ sensorData } : Props) => {
 
   // console.log("SensorDataDisplay", sensorData)
 
-  // // Use useEffect to trigger animation when sensorData changes
-  // useEffect(() => {
-  //   // console.log("useEffect triggered", sensorData)
-  //   animateValue(animatedMotorLeftSpeed, sensorData.motor_left_speed, setAnimatedMotorLeftSpeed);
-  //   animateValue(animatedMotorRightSpeed, sensorData.motor_right_speed, setAnimatedMotorRightSpeed);
-  //   animateValue(animatedColorSensor, sensorData.color_sensor, setAnimatedColorSensor);
-  //   var infraredTarget = sensorData.infrared_sensor;
-  //   if (infraredTarget > 99) {
-  //     infraredTarget = 99;
-  //   }
-  //   animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
-  // }, [sensorData]);
+  // Use useEffect to trigger animation when sensorData changes
+  useEffect(() => {
+    // console.log("useEffect triggered", sensorData)
+    animateValue(animatedMotorLeftSpeed, sensorData.motor_left_speed, setAnimatedMotorLeftSpeed);
+    animateValue(animatedMotorRightSpeed, sensorData.motor_right_speed, setAnimatedMotorRightSpeed);
+    animateValue(animatedColorSensor, sensorData.color_sensor, setAnimatedColorSensor);
+    var infraredTarget = sensorData.infrared_sensor;
+    if (infraredTarget > 99) {
+      infraredTarget = 99;
+    }
+    animateValue(animatedInfraredSensor, infraredTarget, setAnimatedInfraredSensor);
+  }, [sensorData, n]);
 
 
   const renderMotorSpeed = (speed: number) => {
