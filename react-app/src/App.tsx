@@ -123,8 +123,13 @@ function App() {
   }
 
   let onPlayUpdate = (index: number, durationMs: number) => {
-    applyNewRunData(displayInfo, selectedRunData, durationMs);
-    applyNewRunData(displayInfo2, selectedRunData2, durationMs);
+    if (index === 0) {
+      setDisplayInfo(new RunDisplayInfo());
+      setDisplayInfo2(new RunDisplayInfo());
+    } else {
+      applyNewRunData(displayInfo, selectedRunData, durationMs);
+      applyNewRunData(displayInfo2, selectedRunData2, durationMs);
+    }
   }
 
   let wholeMaze = function (info: RunDisplayInfo, showRobot: boolean) {
