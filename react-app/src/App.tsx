@@ -76,7 +76,6 @@ function App() {
     let isMounted = true;
 
     const updateCurrentRunData = async () => {
-      console.log("** updateCurrentRunData", selectedRunRef.current);
       if (selectedRunRef.current !== "Current") {
         return;
       }
@@ -123,7 +122,6 @@ function App() {
   }
 
   let onPlayUpdate = (index: number, durationMs: number) => {
-    console.log("onPlayUpdate", index, durationMs);
     let info = applyNewRunData(displayInfo, selectedRunData, durationMs);
     setDisplayInfo(info);
     let info2 = applyNewRunData(displayInfo2, selectedRunData2, durationMs);

@@ -1,18 +1,20 @@
 // Function to smoothly update the animated values
 const animateValue = (currentValue, targetValue, setterFunction, durationMs = 400) => {
-  const framesPerSecond = 120;
-  const totalFrames = durationMs / (1000 / framesPerSecond);
-  const frameIncrement = (targetValue - currentValue) / totalFrames;
 
-  let currentFrame = 0;
+  var start = Date.now();
 
   const animate = () => {
-    currentFrame++;
-    const nextValue = currentValue + frameIncrement;
+    const now = Date.now();
+    var elapsed = now - start;
+    if (elapsed > durationMs) {
+      setterFunction(targetValue);
+      return;
+    }
+
+    const nextValue = currentValue + (targetValue - currentValue) * elapsed / durationMs;
     setterFunction(nextValue);
 
-    if (currentFrame < totalFrames) {
-      currentValue = nextValue;
+    if (elapsed < durationMs) {
       requestAnimationFrame(animate);
     }
   };

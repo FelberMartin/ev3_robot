@@ -1,6 +1,6 @@
 import exp from "constants";
 import { DiscoveryState } from "../components/Maze";
-import { getDiscoveryStateIndices, getWallIndices, gridSegmentCounts } from "./positions";
+import { getDiscoveryStateIndices, getDistanceToWall, getWallNextWallIndices, gridSegmentCounts } from "./positions";
 import { get } from "http";
 import { animateValue } from "./Animation";
 
@@ -80,9 +80,9 @@ class RunDisplayInfo {
             if (command === "forward") {
                 this._moveForward();
             } else if (command === "left") {
-                this.rotation = (this.rotation + 270) % 360;
+                this._rotate(-90);
             } else if (command === "right") {
-                this.rotation = (this.rotation + 90) % 360;
+                this._rotate(90);
             } else if (command === "all_measures") {
                 // Nothing to do here
             }
@@ -98,52 +98,74 @@ class RunDisplayInfo {
     }
 
     _moveForward() {
-        let x = this.position[0];
-        let y = this.position[1];
-        if (this.rotation === 0) {
-            y--;
-        } else if (this.rotation === 90) {
-            x++;
-        } else if (this.rotation === 180) {
-            y++;
-        } else if (this.rotation === 270) {
-            x--;
-        }
+        let direction = this._getDirectionVector();
+        let x = this.position[0] + direction[0];
+        let y = this.position[1] + direction[1];
 
         this.path.push([this.position[0], this.position[1]]);
         animateValue(this.position[0], x, (value) => {
             this.position[0] = value;
             this.path[this.path.length - 1][0] = value;
+            this._updateDiscoveryStates();
             this.onUpdate?.call(this, this);
-        });
+        }, 1600);
         animateValue(this.position[1], y, (value) => {
             this.position[1] = value;
             this.path[this.path.length - 1][1] = value;
             this.onUpdate?.call(this, this);
-        });
+        }, 1600);
+    }
+
+    _getDirectionVector(): [number, number] {
+        let rotation = this.rotation % 360;
+        if (rotation >= 315 || rotation < 45) {
+            return [0, -1];
+        } else if (rotation >= 45 && rotation < 135) {
+            return [1, 0];
+        } else if (rotation >= 135 && rotation < 225) {
+            return [0, 1];
+        } else if (rotation >= 225 && rotation < 315) {
+            return [-1, 0];
+        }
+    }
+
+    _rotate(degree: number) {
+        animateValue(this.rotation, this.rotation + degree, (value) => {
+            this.rotation = value;
+            this._updateDiscoveryStates();
+            this.onUpdate?.call(this, this);
+        }, 1000);
     }
 
     _updateDiscoveryStates() {
         // Tiles
-        let [x, y] = getDiscoveryStateIndices(this.position);
+        let [x, y] = this.position;
         if (x < 0 || x >= gridSegmentCounts || y < 0 || y >= gridSegmentCounts) {
-            // console.log("Position out of bounds: ", this.position);
             return;
         }
 
-        [x, y] = [Math.round(x), Math.round(y)];
-        this.discoveryStates[x][y] = DiscoveryState.path;
+        let [xRounded, yRounded] = [Math.round(x), Math.round(y)];
+        let dsIndices = getDiscoveryStateIndices([xRounded, yRounded]);
+        this._setDiscoveryState(dsIndices, DiscoveryState.path);
         if (this.sensorData.color_sensor >= 40) {
-            this.discoveryStates[x][y] = DiscoveryState.target;
+            this._setDiscoveryState(dsIndices, DiscoveryState.target);
         }
 
         // Walls
-        // let [xWall, yWall] = getWallIndices(this.position, this.rotation);
-        // if (this.sensorData.infrared_sensor <= 40) {
-        //     this.discoveryStates[xWall][yWall] = DiscoveryState.wall;
-        // } else {
-        //     this.discoveryStates[xWall][yWall] = DiscoveryState.no_wall;
-        // }
+        let direction = this._getDirectionVector();
+        let nextWallIndices = getWallNextWallIndices([xRounded, yRounded], direction);
+        let distanceToWall = getDistanceToWall(this.position, nextWallIndices);
+        if (distanceToWall < 0.8) {
+            if (this.sensorData.infrared_sensor < 40) {
+                this._setDiscoveryState(nextWallIndices, DiscoveryState.wall);
+            } else {
+                this._setDiscoveryState(nextWallIndices, DiscoveryState.no_wall);
+            }
+        }
+    }
+
+    _setDiscoveryState(indices: [number, number], state: DiscoveryState) {
+        this.discoveryStates[indices[0]][indices[1]] = state;
     }
 
 }

@@ -16,29 +16,27 @@ const getCanvasMiddleTilePosition = (xTile: number, yTile: number) => {
     return { x, y };
 }
 
-const getDiscoveryStateIndices = (tileIndices: [number, number]) => {
+const getDiscoveryStateIndices = (tileIndices: [number, number]): [number, number] => {
     const x = tileIndices[0] * 2 + 1;
     const y = tileIndices[1] * 2 + 1;
     return [x, y];
 }
 
-const getWallIndices = (tileIndices: [number, number], rotation: number) => {
-    let [x, y] = getDiscoveryStateIndices(tileIndices);
-    switch (rotation) {
-        case 0:
-            y--;
-            break;
-        case 90:
-            x++;
-            break;
-        case 180:
-            y++;
-            break;
-        case 270:
-            x--;
-            break;
-    }
+const getWallNextWallIndices = (tileIndices: [number, number], direction: [number, number]): [number, number] => {
+    const dsIndices = getDiscoveryStateIndices(tileIndices);
+    const x = dsIndices[0] + direction[0];
+    const y = dsIndices[1] + direction[1];
     return [x, y];
 }
 
-export { getCanvasMiddleTilePosition, getDiscoveryStateIndices, getWallIndices };
+const getDistanceToWall = (tilePosition: [number, number], wallIndicies: [number, number]): number => {
+    let xWall = wallIndicies[0] / 2 + 0.5;
+    let yWall = wallIndicies[1] / 2 + 0.5;
+    let xTile = tilePosition[0];
+    let yTile = tilePosition[1];
+    let xDiff = xWall - xTile;
+    let yDiff = yWall - yTile;
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+}
+
+export { getCanvasMiddleTilePosition, getDiscoveryStateIndices, getWallNextWallIndices, getDistanceToWall };
