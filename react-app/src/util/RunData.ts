@@ -165,7 +165,7 @@ class RunDisplayInfo {
         let [xRounded, yRounded] = [Math.round(x), Math.round(y)];
         let dsIndices = getDiscoveryStateIndices([xRounded, yRounded]);
         this._setDiscoveryState(dsIndices, DiscoveryState.path);
-        if (this.sensorData.color_sensor >= 40) {
+        if (this.sensorData.color_sensor >= 35) {
             this._setDiscoveryState(dsIndices, DiscoveryState.target);
         }
 

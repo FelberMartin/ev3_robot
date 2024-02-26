@@ -50,6 +50,7 @@ algorithm_index = 0
 
 @app.route('/get_algorithm', methods=['GET'])
 def get_algorithm():
+    return "right_hand_rule"
     options = ["right_hand_rule", "left_hand_rule"]
     global algorithm_index
     algorithm = options[algorithm_index]
