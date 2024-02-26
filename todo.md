@@ -1,4 +1,3 @@
 TODO:
-- Comment code
-- Sensor data out of sync
+- Comment code (python server)
 - Add larger mazes

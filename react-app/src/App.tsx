@@ -160,7 +160,7 @@ function App() {
     return <div className="wholeMaze">
       <div>
         <MazeCanvas path={info.path} />
-        <Robot position={info.position} rotation={info.rotation} show={showRobot} />
+        <Robot position={info.position} rotation={info.rotation[0]} show={showRobot} />
         <Maze discoverStates={info.discoveryStates}/>
       </div>
       <div>
