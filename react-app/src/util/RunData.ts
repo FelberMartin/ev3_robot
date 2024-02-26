@@ -193,10 +193,10 @@ class RunDisplayInfo {
  * data that was not yet applied to the info. The lastUpdate field of the info is used to determine
  * which data is new.
  */
-function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: number) : RunDisplayInfo {
+function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: number) {
     if (runData.length === 0) {
         console.log("Trying to extract run display info from empty run data")
-        return info;
+        return;
     }
     let startString = runData[0]["backendTimestampMs"];
     let start = Number(startString);
@@ -205,11 +205,13 @@ function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: 
         let timestamp = data["backendTimestampMs"];
         return timestamp > info.lastUpdate && timestamp <= end;
     });
+    if (truncatedRunData.length === 0) {
+        return;
+    }
     for (let i = 0; i < truncatedRunData.length; i++) {
         info.applyRunDataEntry(truncatedRunData[i]);
     }
-    info.lastUpdate = end;
-    return info;
+    info.lastUpdate = truncatedRunData[truncatedRunData.length - 1]["backendTimestampMs"];
 }
 
 async function getCurrentRunData() : Promise<any[] | null> {
