@@ -153,9 +153,10 @@ class RunDisplayInfo {
 
         // Walls
         let direction = this._getDirectionVector();
-        let nextWallIndices = getWallNextWallIndices([xRounded, yRounded], direction);
+        let nextWallIndices = getWallNextWallIndices(dsIndices, direction);
         let distanceToWall = getDistanceToWall(this.position, nextWallIndices);
-        if (distanceToWall < 0.8) {
+        console.log(distanceToWall, this.sensorData.infrared_sensor);
+        if (distanceToWall > 0.2 && distanceToWall < 0.8) {
             if (this.sensorData.infrared_sensor < 40) {
                 this._setDiscoveryState(nextWallIndices, DiscoveryState.wall);
             } else {

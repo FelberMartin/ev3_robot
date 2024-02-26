@@ -22,16 +22,15 @@ const getDiscoveryStateIndices = (tileIndices: [number, number]): [number, numbe
     return [x, y];
 }
 
-const getWallNextWallIndices = (tileIndices: [number, number], direction: [number, number]): [number, number] => {
-    const dsIndices = getDiscoveryStateIndices(tileIndices);
+const getWallNextWallIndices = (dsIndices: [number, number], direction: [number, number]): [number, number] => {
     const x = dsIndices[0] + direction[0];
     const y = dsIndices[1] + direction[1];
     return [x, y];
 }
 
 const getDistanceToWall = (tilePosition: [number, number], wallIndicies: [number, number]): number => {
-    let xWall = wallIndicies[0] / 2 + 0.5;
-    let yWall = wallIndicies[1] / 2 + 0.5;
+    let xWall = wallIndicies[0] / 2 - 0.5;
+    let yWall = wallIndicies[1] / 2 - 0.5;
     let xTile = tilePosition[0];
     let yTile = tilePosition[1];
     let xDiff = xWall - xTile;
