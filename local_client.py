@@ -12,15 +12,15 @@ import random
 
 import data.data_extraction as data_extraction
 
-isConnected = False
+is_connected = False
 
 ev3_tag = "[EV3]"
 # Color the EV3 tag to be gray
 ev3_tag = "\033[90m" + ev3_tag + "\033[0m "
 
-
-def connectBluetooth():
-    global isConnected, client, mbox_move, mbox_messure, mbox_heartbeat
+# Connect to the EV3 via Bluetooth
+def connect_bluetooth():
+    global is_connected, client, mbox_move, mbox_messure, mbox_heartbeat
     client = BluetoothMailboxClient()
     mbox_move = TextMailbox('move', client)
     mbox_messure = TextMailbox('measure', client)
@@ -29,12 +29,12 @@ def connectBluetooth():
     try:
         client.connect("00:17:EC:ED:1E:3D")
         print(ev3_tag, "\033[92mConnected!\033[0m")
-        isConnected = True
+        is_connected = True
     except:
-        isConnected = False
+        is_connected = False
         print(ev3_tag, "Could not connect to brick")
         sleep(5)
-        connectBluetooth()
+        connect_bluetooth()
 
 
 app = Flask(__name__)
@@ -43,19 +43,25 @@ CORS(app)
 
 @app.route('/is_connected', methods=['GET'])
 def is_connected():
-    return str(isConnected)
+    return str(is_connected)
 
 
 algorithm_index = 0
 
 @app.route('/get_algorithm', methods=['GET'])
 def get_algorithm():
-    return "right_hand_rule"
     options = ["right_hand_rule", "left_hand_rule"]
     global algorithm_index
     algorithm = options[algorithm_index]
     algorithm_index = (algorithm_index + 1) % len(options)
     return algorithm
+
+@app.route('/timeout', methods=['POST'])
+def timeout():
+    # The post request has a "timeout" field that specifies the duration of the timeout in seconds
+    duration = float(request.form['timeout'])
+    sleep(duration)
+    return "OK"
 
 @app.route('/forward', methods=['POST'])
 def forward():
@@ -97,8 +103,9 @@ def motor():
 def all_measures():
     return send_command(request, Command.ALL_MEASURES, mbox_messure)
 
+# Send a command to the EV3, wait for the response from EV3 and send it back to the CPEE
 def send_command(request, command, mbox):
-    if not isConnected:
+    if not is_connected:
         return Response("EV3 not connected", status=503)
     
     callback_url = "____no_cpee_callback_provided"
@@ -140,13 +147,16 @@ def currentRun():
 
 
 # ------------------------- Sending heartbeats to the EV3 ---------------------------
+
+# Send heartbeats to the EV3 to check if it is still connected. If not, try to reconnect.
+# Note: If the server is restarted, the EV3 will also need to be restarted (it cannot reconnect to the server).
 def send_heartbeats():
-    global isConnected
+    global is_connected
     counter = 0
     while True:
-        if not isConnected:
+        if not is_connected:
             print(ev3_tag, "Connecting to EV3")
-            connectBluetooth()
+            connect_bluetooth()
 
         sleep(3)
 
@@ -161,9 +171,9 @@ def send_heartbeats():
 
         except Exception as e:
             print(ev3_tag, "\033[91m" + str(e) + "\033[0m")
-            isConnected = False
+            is_connected = False
             print(ev3_tag, "Could not send heartbeat")
-            connectBluetooth()
+            connect_bluetooth()
 
 
 # ------------------------- Main program ---------------------------
