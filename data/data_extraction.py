@@ -8,31 +8,34 @@ import time
 # A list of CPEE instances that are allowed to send data to this server
 instances = {"right_hand_rule", "left_hand_rule", "random_mouse", "test2", "lego_maze_solver_central"}
 
-current_stream_file = None
-
 cpee_tag = "[CPEE]"
 # Color the CPEE tag to be blue
 cpee_tag = "\033[94m" + cpee_tag + "\033[0m "
 
-data = []
-current_data = []
+# All the data from the run_data folder
+all_run_data = []
 
+# The current stream file that is being written to (from a live running instance)
+current_run_data_file = None
+current_run_data = []
+
+# Sets up all the local variables with the initial data
 def initialize():
-    _update_data()
+    _update_all_run_data()
 
-def _update_data():
-    global data
-    data = []
-    # Initilize the data with all the files in the streams folder
+def _update_all_run_data():
+    global all_run_data
+    all_run_data = []
+    # Initilize the data with all the files in the run_data folder
     # Data should be a list of dictionaries, where each dictionary represents a stream
     # Each dictionary should have the following keys: "key" (the file name) and "content" (the file content)
-    for file_name in os.listdir("./data/streams"):
-        if file_name == current_stream_file:
+    for file_name in os.listdir("./data/run_data"):
+        if file_name == current_run_data_file:
             continue
 
-        with open(f"./data/streams/{file_name}", 'r') as f:
+        with open(f"./data/run_data/{file_name}", 'r') as f:
             content = f.read()
-            data.append({"id": file_name, "content": content})
+            all_run_data.append({"id": file_name, "content": content})
 
     
 
@@ -58,7 +61,7 @@ def handle_post_request(request):
 
         if parsed_json['instance-name'] in instances:
             print(cpee_tag, "Received data from CPEE: ", parsed_json)
-            _handle_data(parsed_json)
+            _handle_cpee_json_data(parsed_json)
         else:
             print(cpee_tag, "Received data from unknown CPEE instance ", parsed_json['instance'], " - ", parsed_json['instance-name'])
 
@@ -68,14 +71,15 @@ def handle_post_request(request):
     return 'OK'
 
 
-def _handle_data(full_json):
-    global current_stream_file, current_data
+# Process json data from relevant CPEE instances
+def _handle_cpee_json_data(full_json):
+    global current_run_data_file, current_run_data
     if 'state' in full_json['content']:
-        if current_stream_file == None and full_json['content']['state'] == 'running':
-            current_stream_file = full_json['timestamp'] + ".json"
+        if current_run_data_file == None and full_json['content']['state'] == 'running':
+            current_run_data_file = full_json['timestamp'] + ".json"
         elif full_json['content']['state'] == 'stopped':
-            current_stream_file = None
-            current_data = []
+            current_run_data_file = None
+            current_run_data = []
 
     if full_json['topic'] == 'stream' and full_json['datastream'] is not None:
         _handle_probe_data(full_json)
@@ -84,14 +88,16 @@ def _handle_data(full_json):
         _handle_activity_data(full_json)
 
 
+# Handle data probes send from the CPEE
 def _handle_probe_data(full_json):
     datastream = full_json['datastream']
     stream_point = datastream[0]['stream:point']
     
     print("+++ " + str(stream_point))
-    _append_to_current_data(stream_point)
+    _append_to_current_run_data(stream_point)
 
 
+# Handle activity data send from the CPEE (by subscription in the xml model).
 def _handle_activity_data(full_json):
     content = full_json['content']
     if "timeout" in content['endpoint']:
@@ -99,27 +105,27 @@ def _handle_activity_data(full_json):
     
     relevant_keys = ["activity", "label", "endpoint", "passthrough"]
     content = {k: content[k] for k in relevant_keys if k in content}
-    _append_to_current_data(content)
+    _append_to_current_run_data(content)
     
     
 
-def _append_to_current_data(data):
-    if current_stream_file is None:
+def _append_to_current_run_data(data):
+    if current_run_data_file is None:
         print("*** Error: No stream file is currently open")
         return
     
     data['backendTimestampMs'] = time.time() * 1000
-    current_data.append(data)
+    current_run_data.append(data)
 
-    with open(f"./data/streams/{current_stream_file}", 'w') as f:
-        f.write(json.dumps(current_data))
+    with open(f"./data/run_data/{current_run_data_file}", 'w') as f:
+        f.write(json.dumps(current_run_data))
 
-def getData():
-    _update_data()
-    return data
+def get_all_run_data():
+    _update_all_run_data()
+    return all_run_data
 
-def getCurrentRunData():
-    if current_stream_file is None:
+def get_current_run_data():
+    if current_run_data_file is None:
         return []
 
-    return current_data
+    return current_run_data

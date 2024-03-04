@@ -139,11 +139,11 @@ def print_post_data():
 # ------------------------- Sending data to Frontend ---------------------------
 @app.route('/allRunData', methods=['GET'])
 def data():
-    return data_extraction.getData()
+    return data_extraction.get_all_run_data()
 
 @app.route('/currentRunData', methods=['GET'])
 def currentRun():
-    return data_extraction.getCurrentRunData()
+    return data_extraction.get_current_run_data()
 
 
 # ------------------------- Sending heartbeats to the EV3 ---------------------------
