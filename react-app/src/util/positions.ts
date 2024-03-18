@@ -38,4 +38,17 @@ const getDistanceToWall = (tilePosition: [number, number], wallIndicies: [number
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 }
 
-export { getCanvasMiddleTilePosition, getDiscoveryStateIndices, getWallNextWallIndices, getDistanceToWall };
+/** 
+ * Returns the number of degrees the current rotation is off from the nearest cardinal direction.
+ * For example, if the rotation is 45 degrees, the function should return 45.
+ * If the rotation is 50 degrees, the function should return 40. 
+ */
+const getRotationOffsetFromCardinalDirection = (rotation: number): number => {
+    let rotationOffset = rotation % 90;
+    if (rotationOffset > 45) {
+        rotationOffset = 90 - rotationOffset;
+    }
+    return rotationOffset;
+}
+
+export { getCanvasMiddleTilePosition, getDiscoveryStateIndices, getWallNextWallIndices, getDistanceToWall, getRotationOffsetFromCardinalDirection };

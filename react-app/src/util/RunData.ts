@@ -1,5 +1,5 @@
 import { DiscoveryState } from "../components/Maze";
-import { getDiscoveryStateIndices, getDistanceToWall, getWallNextWallIndices, gridSegmentCounts } from "./positions";
+import { getDiscoveryStateIndices, getDistanceToWall, getRotationOffsetFromCardinalDirection, getWallNextWallIndices, gridSegmentCounts } from "./positions";
 import { animateValue } from "./Animation";
 
 // Looks like this: {"color_sensor": 0, "infrared_sensor": 67, "motor_left_angle": 58868, "motor_left_speed": 405, "motor_right_angle": 50868, "motor_right_speed": 399}
@@ -129,11 +129,15 @@ class RunDisplayInfo {
             this.position[0] = value;
             this.path[this.path.length - 1][0] = value;
             this.onUpdate?.call(this, this);
+        }, () => {
+            this._updateDiscoveryStates();
         }, moveForwardDuration);
         animateValue(this.position[1], y, (value: number) => {
             this.position[1] = value;
             this.path[this.path.length - 1][1] = value;
             this.onUpdate?.call(this, this);
+        }, () => {
+            this._updateDiscoveryStates();
         }, moveForwardDuration);
     }
 
@@ -158,6 +162,8 @@ class RunDisplayInfo {
         animateValue(this.rotation[0], this.rotation[0] + degree, (value: number) => {
             this.rotation[0] = value;
             this.onUpdate?.call(this, this);
+        }, () => {
+            this._updateDiscoveryStates();
         }, 1000);
     }
 
@@ -179,7 +185,8 @@ class RunDisplayInfo {
         let direction = this._getDirectionVector();
         let nextWallIndices = getWallNextWallIndices(dsIndices, direction);
         let distanceToWall = getDistanceToWall(this.position, nextWallIndices);
-        if (distanceToWall > 0.1 && distanceToWall < 0.8) { // Don't update if the potential wall is too far away or too close 
+        let rotationOffset = getRotationOffsetFromCardinalDirection(this.rotation[0]);
+        if (distanceToWall > 0.1 && distanceToWall < 0.8 && rotationOffset < 10) { // Don't update if the potential wall is too far away or too close or if in the middle of rotating
             if (this.sensorData.infrared_sensor < 40) {
                 this._setDiscoveryState(nextWallIndices, DiscoveryState.wall);
             } else {
