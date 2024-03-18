@@ -1,6 +1,6 @@
 from my_pybricks.messaging import BluetoothMailboxClient, TextMailbox
 from time import sleep
-from flask import Flask, request, Response
+from flask import Flask, request, Response, redirect
 from pybricks.parameters import Port
 from ev3.commands import Command
 from flask_cors import CORS
@@ -38,7 +38,7 @@ def connect_bluetooth():
 
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route('/is_connected', methods=['GET'])
@@ -144,6 +144,11 @@ def data():
 @app.route('/currentRunData', methods=['GET'])
 def currentRun():
     return data_extraction.get_current_run_data()
+
+# ------------------------- Redirecting to the react app ---------------------------
+@app.route('/app')
+def react_app():
+    return redirect("http://192.168.0.171:3000/")
 
 
 # ------------------------- Sending heartbeats to the EV3 ---------------------------

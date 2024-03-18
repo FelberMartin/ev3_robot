@@ -1,0 +1,7 @@
+{
+  "name": "local_client",
+  "version": "1.0.0",
+  "scripts": {
+    "start": ".venv/bin/python local_client.py"
+  }
+}
