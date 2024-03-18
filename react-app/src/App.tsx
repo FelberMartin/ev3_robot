@@ -4,14 +4,14 @@ import MazeCanvas from "./components/MazeCanvas";
 import './App.css';
 import Robot from "./components/Robot";
 import { useEffect, useRef, useState } from "react";
-import { RunDisplayInfo, applyNewRunData, getAllRunData, getCurrentRunData } from "./util/RunData";
+import { RunDisplayInfo, RundataWrapper, applyNewRunData, getAllRunData, getCurrentRunData } from "./util/RunData";
 import PlayManager from "./components/PlayManager";
 import SensorDataDisplay from "./components/SensorDataDisplay";
 
 
 function App() {
   // Data for all previous runs
-  let [allRunData, setAllRunData] = useState<(any[] | null)[]>([]);
+  let [allRunData, setAllRunData] = useState<RundataWrapper[]>([]);
 
   // State variables for the selected run
   let [displayInfo, setDisplayInfo] = useState<RunDisplayInfo>(new RunDisplayInfo());

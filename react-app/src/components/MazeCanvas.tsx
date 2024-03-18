@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import { getCanvasMiddleTilePosition, overallSize } from '../util/positions'
 
 interface Props {
@@ -7,9 +7,9 @@ interface Props {
 
 const MazeCanvas = ({ path } : Props) => {
   
-  const canvasRef = useRef(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  function resizeCanvasToDisplaySize(canvas) {
+  function resizeCanvasToDisplaySize(canvas: HTMLCanvasElement) {
     
     const { width, height } = canvas.getBoundingClientRect()
 
@@ -23,7 +23,7 @@ const MazeCanvas = ({ path } : Props) => {
     return false
   }
 
-  const draw = (ctx, frameCount) => {
+  const draw = (ctx: CanvasRenderingContext2D, _frameCount: number) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
     // Draw the path
@@ -45,6 +45,9 @@ const MazeCanvas = ({ path } : Props) => {
   
   useEffect(() => {
     const canvas = canvasRef.current
+    if (canvas === null) {
+      return
+    }
     const context = canvas.getContext('2d')
     
     let frameCount = 0
@@ -55,7 +58,9 @@ const MazeCanvas = ({ path } : Props) => {
     //Our draw came here
     const render = () => {
       frameCount++
-      draw(context, frameCount)
+      if (context) {
+        draw(context, frameCount)
+      }
       animationFrameId = window.requestAnimationFrame(render)
     }
     render()

@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
-import { RunDisplayInfo } from '../util/RunData';
 import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../util/positions'
 import image from './../assets/robot.png'
-import { animateValue } from '../util/Animation';
 
 interface Props {
     position: [number, number],

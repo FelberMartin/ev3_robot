@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SensorData } from '../util/RunData';
 import './SensorDataDisplay.css';
 import { animateValue } from '../util/Animation';

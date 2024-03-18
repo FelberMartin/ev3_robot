@@ -1,5 +1,5 @@
 // Function to smoothly update the animated values
-const animateValue = (currentValue: number, targetValue: number, setterFunction, durationMs = 200) => {
+const animateValue = (currentValue: number, targetValue: number, setterFunction: (arg0: number) => any, durationMs = 200) => {
   if (targetValue === currentValue) {
     return;
   }

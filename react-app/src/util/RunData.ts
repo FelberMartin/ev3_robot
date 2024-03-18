@@ -125,12 +125,12 @@ class RunDisplayInfo {
 
         let moveForwardDuration = 3000;
         this.path.push([this.position[0], this.position[1]]);
-        animateValue(this.position[0], x, (value) => {
+        animateValue(this.position[0], x, (value: number) => {
             this.position[0] = value;
             this.path[this.path.length - 1][0] = value;
             this.onUpdate?.call(this, this);
         }, moveForwardDuration);
-        animateValue(this.position[1], y, (value) => {
+        animateValue(this.position[1], y, (value: number) => {
             this.position[1] = value;
             this.path[this.path.length - 1][1] = value;
             this.onUpdate?.call(this, this);
@@ -151,10 +151,11 @@ class RunDisplayInfo {
         } else if (rotation >= 225 && rotation < 315) {
             return [-1, 0]; // Left
         }
+        return [0, -1]; // Default to up
     }
 
     _rotate(degree: number) {
-        animateValue(this.rotation[0], this.rotation[0] + degree, (value) => {
+        animateValue(this.rotation[0], this.rotation[0] + degree, (value: number) => {
             this.rotation[0] = value;
             this.onUpdate?.call(this, this);
         }, 1000);
@@ -222,6 +223,13 @@ function applyNewRunData(info: RunDisplayInfo, runData: Array<any>, durationMs: 
     }
 }
 
+interface RundataWrapper {
+    id: string;
+    content: string;
+}
+
+export type { RundataWrapper };
+
 async function getCurrentRunData() : Promise<any[] | null> {
     try {
         const response = await fetch('http://localhost:8080/currentRunData');
@@ -232,13 +240,13 @@ async function getCurrentRunData() : Promise<any[] | null> {
         const result = await response.json();
         console.log('currentRunData received');
         return result;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error.message);
     }
     return null;
 }
 
-async function getAllRunData() : Promise<(any[] | null)[]> {
+async function getAllRunData() : Promise<RundataWrapper[]> {
     try {
         const response = await fetch('http://localhost:8080/allRunData');
         if (!response.ok) {
@@ -248,7 +256,7 @@ async function getAllRunData() : Promise<(any[] | null)[]> {
         var result = await response.json();
         console.log('runData received');
         return result;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error.message);
     }
     return [];

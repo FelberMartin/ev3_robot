@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { on } from "events";
 import { useState } from "react";
 
 interface Props {
@@ -31,7 +30,7 @@ function Dropdown({items, onSelected, defaultValue}: Props) {
             selectedFile === item
             ? "dropdown-item active"
             : "dropdown-item"
-          } href="#" onClick={(event) => {
+          } href="#" onClick={(_) => {
             setSelectedFile(item);
             onSelected(item);
           }}>
