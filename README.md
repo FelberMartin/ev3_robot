@@ -3,7 +3,7 @@
 ## How to run
 
 * **Python server**: `npm start`
-* **Visualization**: `cd react-app && npm run serve` (may need `npm run build` to reflect code changes)
+* **Visualization**: `cd react-app && npm run build` followed by `cd dist && serve -s -l 9902` 
 * **Robot**: Execute the `ev3/main.py` file from the brick's file browser. Needs to be restarted everytime the python server is restarted.
 
 
@@ -19,7 +19,6 @@ The python server is responsible for
 - Brigding communictation between CPEE and the EV3 robot
 - Retrieving and storing information from the CPEE (stream points, model activity data)
 - Exposing the stored data to the react visualization app
-- And forwarding requests for the react app to the public accessable url
 
 
 ### Visualization: React app
@@ -28,12 +27,14 @@ The React app uses vite and can display a current run of the robot or compare pr
 
 This app expects to find the python server API exposed under `https://lehre.bpm.in.tum.de/ports/9901/`. 
 
-To access the app from outside, use the redirect link from the python server: https://lehre.bpm.in.tum.de/ports/9901/app. 
+To access the app from outside, use the following port: https://lehre.bpm.in.tum.de/ports/9902.
 
 
-Template for updating `dist/index.html`:
+Template for updating `dist/index.html` after running `npm run build`:
 ```
-<script type="module" crossorigin src="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-JP_4PXIi.js"></script>
-    <link rel="stylesheet" crossorigin href="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-qAHTkMHt.css">
+    <script type="module" crossorigin src="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-<hash>.js"></script>
+    <link rel="stylesheet" crossorigin href="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-<hash>.css">
 ```
 
+This is needed because otherwise the server will send requests to the wrong url (probably because of the port forwarding on the lehre server).
+Also all other dynamically needed resources needed for the app (eg the robot.png) are accessed through the lehre server.
