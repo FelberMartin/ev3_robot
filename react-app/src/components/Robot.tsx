@@ -1,5 +1,4 @@
 import { getCanvasMiddleTilePosition, overallSize, tileSize } from '../util/positions'
-import image from './../assets/robot.png'
 
 interface Props {
     position: [number, number],
@@ -20,7 +19,7 @@ const Robot = ({ position, rotation, show } : Props) => {
         height: overallSize,
         opacity: show ? 1 : 0.5
     }}>
-        <img src={image} style={{
+        <img src="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/src/assets/robot.png" style={{
             width: robotSize,
             height: robotSize,
             marginLeft: imageTopLeft.x,
