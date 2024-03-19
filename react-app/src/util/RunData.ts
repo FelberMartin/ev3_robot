@@ -239,7 +239,7 @@ export type { RundataWrapper };
 
 async function getCurrentRunData() : Promise<any[] | null> {
     try {
-        const response = await fetch('http://lehre.bpm.in.tum.de/ports/9901/currentRunData');
+        const response = await fetch('https://lehre.bpm.in.tum.de/ports/9901/currentRunData');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -255,7 +255,7 @@ async function getCurrentRunData() : Promise<any[] | null> {
 
 async function getAllRunData() : Promise<RundataWrapper[]> {
     try {
-        const response = await fetch('http://lehre.bpm.in.tum.de/ports/9901/allRunData');
+        const response = await fetch('https://lehre.bpm.in.tum.de/ports/9901/allRunData');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

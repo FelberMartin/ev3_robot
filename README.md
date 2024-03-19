@@ -30,3 +30,10 @@ This app expects to find the python server API exposed under `https://lehre.bpm.
 
 To access the app from outside, use the redirect link from the python server: https://lehre.bpm.in.tum.de/ports/9901/app. 
 
+
+Template for updating `dist/index.html`:
+```
+<script type="module" crossorigin src="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-JP_4PXIi.js"></script>
+    <link rel="stylesheet" crossorigin href="https://lehre.bpm.in.tum.de/~ge35diz/practicum/ev3_robot/react-app/dist/assets/index-qAHTkMHt.css">
+```
+
